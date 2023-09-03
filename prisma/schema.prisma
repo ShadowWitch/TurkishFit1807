@@ -1,0 +1,236 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TODO ------------------------- CONTROL DE CLIENTE --------------------------------------------------
+
+model Pais {
+  id           String         @id @default(uuid())
+  nombre       String
+  codigo       String
+  Departamento Departamento[]
+}
+
+model Departamento {
+  id      String @id @default(uuid())
+  nombre  String
+  codigo  String
+  id_pais String
+
+  Pais      Pais        @relation(fields: [id_pais], references: [id])
+  Municipio Municipio[]
+}
+
+model Municipio {
+  id              String       @id @default(uuid())
+  nombre          String
+  codigo          String
+  id_departamento String
+  Departamento    Departamento @relation(fields: [id_departamento], references: [id])
+  Clientes        Clientes[]
+}
+
+model Contratos {
+  id               String     @id @default(uuid())
+  descripcion      String
+  fechaDeInicio    DateTime
+  fechaDeFin       DateTime
+  ultimaRenovacion DateTime
+  id_pago          String
+  estado           String //* Vencido o Activo -> Activarselo una vez que el Cliente Pague
+  Pagos            Pagos      @relation(fields: [id_pago], references: [id])
+  Clientes         Clientes[]
+}
+
+model Pagos {
+  id             String      @id @default(uuid())
+  cantidadPagada Int
+  fechaPago      DateTime
+  estadoPago     String //* Pagado o No
+  id_cliente     String
+  Clientes       Clientes    @relation(fields: [id_cliente], references: [id])
+  Contratos      Contratos[]
+}
+
+model Clientes {
+  id                 String   @id @default(uuid())
+  DNI                String
+  primerNombre       String
+  segundoNombre      String
+  otroNombre         String
+  telefono           String
+  telefono2          String?
+  correo             String?
+  fechaNacimiento    DateTime
+  direccionDetallada String
+  fechaDeIngreso     DateTime
+  id_municipio       String
+  id_contrato        String
+
+  Municipio Municipio @relation(fields: [id_municipio], references: [id])
+  Contratos Contratos @relation(fields: [id_contrato], references: [id])
+
+  Pagos   Pagos[]
+  Rutinas Rutinas[]
+}
+
+// TODO ------------------------- FIN CONTROL DE CLIENTE --------------------------------------------------
+
+// TODO -------------------------  CONTROL DE EJERCICIOS Y DEMAS --------------------------------------------------
+
+model ObjetivosCatalogos {
+  id          String    @id @default(uuid())
+  descripcion String
+  Dietas      Dietas[]
+  Rutinas     Rutinas[]
+}
+
+model CantidadSeries {
+  id          String    @id @default(uuid())
+  cantidad    Int
+  descripcion String?
+  Rutinas     Rutinas[]
+}
+
+model TiemposDeDescanso {
+  id          String    @id @default(uuid())
+  tiempo      String
+  tipo        String //* Por Reps o por Series
+  descripcion String?
+  Rutinas     Rutinas[]
+}
+
+model CantidadRepeticiones {
+  id          String    @id @default(uuid())
+  cantidad    Int
+  descripcion String?
+  Rutinas     Rutinas[]
+}
+
+model TiposEjercicios {
+  id          String      @id @default(uuid())
+  nombreTipo  String
+  descripcion String
+  Ejercicio   Ejercicio[]
+}
+
+model Ejercicio {
+  id              String          @id @default(uuid())
+  nombre          String
+  descripcion     String
+  imagen          String?
+  id_tipo         String
+  TiposEjercicios TiposEjercicios @relation(fields: [id_tipo], references: [id])
+  Rutinas         Rutinas[]
+}
+
+model Dietas {
+  id                    String             @id @default(uuid())
+  descripcion           String
+  id_objetivosCatalogos String
+  ObjetivosCatalogos    ObjetivosCatalogos @relation(fields: [id_objetivosCatalogos], references: [id])
+}
+
+model Rutinas {
+  id     String @id @default(uuid())
+  nombre String
+
+  id_tiemposDeDescanso    String
+  id_cantidadRepeticiones String
+  id_cantidadSeries       String
+  id_ejercicio            String
+  id_objetivosCatalogos   String
+  id_cliente              String
+
+  Ejercicio            Ejercicio            @relation(fields: [id_ejercicio], references: [id])
+  ObjetivosCatalogos   ObjetivosCatalogos   @relation(fields: [id_objetivosCatalogos], references: [id])
+  Clientes             Clientes             @relation(fields: [id_cliente], references: [id])
+  CantidadSeries       CantidadSeries       @relation(fields: [id_cantidadSeries], references: [id])
+  CantidadRepeticiones CantidadRepeticiones @relation(fields: [id_cantidadRepeticiones], references: [id])
+  TiemposDeDescanso    TiemposDeDescanso    @relation(fields: [id_tiemposDeDescanso], references: [id])
+}
+
+// TODO ------------------------- FIN CONTROL DE EJERCICIOS Y DEMAS --------------------------------------------------
+
+// TODO ------------------------- MONITOREO DE SERVIDOR --------------------------------------------------
+
+model NetworkingClient {
+  id             String           @id @default(uuid())
+  ipAddress      String
+  navegador      String
+  ubicacion      String
+  NetworkingLogs NetworkingLogs[]
+}
+
+model NetworkingLogs {
+  id                  String @id @default(uuid())
+  metodo              String //* POST, PUT, GET, DELETE, PATCH
+  consulta            String //* body: {id: 1, name: 'pedrito', pass: 'pedrito123123'}
+  id_networkingClient String
+
+  NetworkingClient NetworkingClient @relation(fields: [id_networkingClient], references: [id])
+}
+
+model NetworkingCors {
+  id        String   @id @default(uuid())
+  whiteList String[]
+  blackList String[]
+}
+
+// TODO ------------------------- FIN MONITOREO DE SERVIDOR --------------------------------------------------
+
+// TODO -------------------------  CONTROL DE APLICACION ANDROID --------------------------------------------------
+
+model ParametrosCatalogos {
+  id                    String  @id @default(uuid())
+  nombreApp             String
+  temaApp               String? //* Posiblemente lo termine quitando este...
+  cantidadIntentos      Int
+  activarNotificaciones Boolean
+  logotipoApp           String? //* Por default si no la envia se le pondra una proporcionada por mi mismo...
+}
+
+// TODO ------------------------- FIN CONTROL DE APLICACION ANDROID  --------------------------------------------------
+
+// TODO -------------------------  CONTROL DE USUARIOS --------------------------------------------------
+
+model Permisos {
+  id          String   @id @default(uuid())
+  nombre      String
+  descripcion String
+  acciones    String[]
+  Roles       Roles[]
+}
+
+model Roles {
+  id          String @id @default(uuid())
+  nombre      String
+  descripcion String
+  id_permisos String
+
+  Permisos Permisos   @relation(fields: [id_permisos], references: [id])
+  Usuarios Usuarios[]
+}
+
+model Usuarios {
+  id                String  @id @default(uuid())
+  nombre            String
+  correoElectronico String
+  contrasena        String
+  ultimaConexion    String
+  imagenPerfil      String?
+  estado            String // * Bloqueado, Activo, etc...
+  id_role           String
+
+  Roles Roles @relation(fields: [id_role], references: [id])
+}
+
+// TODO ------------------------- FIN CONTROL DE USUARIOS  --------------------------------------------------
