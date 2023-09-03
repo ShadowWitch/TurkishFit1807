@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { addContrato, deleteContrato, getOneContrato, updateContrato } from '../../controllers/controlContratosPagos/controlContratos.controller';
-import { getOnePago } from '../../controllers/controlContratosPagos/controlPagos.controller.';
+import { addPagos, deletePagos, getOnePagos, updatePagos } from '../../controllers/controlContratosPagos/controlPagos.controller.';
 
 export const routerContratoPagos = Router()
 
@@ -12,4 +12,7 @@ routerContratoPagos.delete('/delete-one', deleteContrato)
 
 
 // * Pagos
-routerContratoPagos.get('/show-pago', getOnePago)
+routerContratoPagos.get('/show-pago', getOnePagos)
+routerContratoPagos.post('/add-one', addPagos)
+routerContratoPagos.put('/update-one', updatePagos)
+routerContratoPagos.delete('/delete-one', deletePagos)

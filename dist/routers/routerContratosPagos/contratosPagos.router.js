@@ -11,4 +11,7 @@ exports.routerContratoPagos.post('/add-one', controlContratos_controller_1.addCo
 exports.routerContratoPagos.put('/update-one', controlContratos_controller_1.updateContrato);
 exports.routerContratoPagos.delete('/delete-one', controlContratos_controller_1.deleteContrato);
 // * Pagos
-exports.routerContratoPagos.get('/show-pago', controlPagos_controller_1.getOnePago);
+exports.routerContratoPagos.get('/show-pago', controlPagos_controller_1.getOnePagos);
+exports.routerContratoPagos.post('/add-one', controlPagos_controller_1.addPagos);
+exports.routerContratoPagos.put('/update-one', controlPagos_controller_1.updatePagos);
+exports.routerContratoPagos.delete('/delete-one', controlPagos_controller_1.deletePagos);
