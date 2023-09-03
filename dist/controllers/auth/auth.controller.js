@@ -25,17 +25,35 @@ exports.authLogin = authLogin;
 const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { nombre, contrasena, correoElectronico, id_role, imagenPerfil = "", } = req.body;
+        // * Verificar Usuario
+        const verificacionUsuario = yield db_1.prisma.tBL_USUARIOS.findFirst({
+            where: {
+                OR: [
+                    {
+                        nombre: nombre.toString().toLowerCase(),
+                    },
+                    {
+                        correoElectronico: correoElectronico.toString().toLowerCase()
+                    }
+                ]
+            }
+        });
+        if (verificacionUsuario)
+            return res.status(400).json({
+                ok: true,
+                message: 'Ese usuario o correo ya se encuentra en uso',
+                data: null
+            });
+        // * Registrar Usuario
         const contrasenaEncriptada = yield bcrypt_1.default.hashSync(contrasena.toString().toLowerCase(), 10);
         const respDB = yield db_1.prisma.tBL_USUARIOS.create({
             data: {
                 nombre: nombre.toString().toLocaleLowerCase(),
                 contrasena: contrasenaEncriptada,
                 correoElectronico: correoElectronico.toString(),
-                estado: 'Activo',
                 id_role: id_role.toString(),
             }
         });
-        console.log('RESP >> ', JSON.stringify(respDB, null, 3));
         return res.json({
             ok: true,
             message: 'Usuario creado',
