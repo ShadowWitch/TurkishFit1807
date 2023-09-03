@@ -1,0 +1,305 @@
+-- CreateTable
+CREATE TABLE "TBL_PAIS" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "codigo" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_PAIS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_DEPARTAMENTO" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "codigo" TEXT NOT NULL,
+    "id_pais" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_DEPARTAMENTO_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_MUNICIPIO" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "codigo" TEXT NOT NULL,
+    "id_departamento" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_MUNICIPIO_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_CONTRATOS" (
+    "id" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+    "fechaDeInicio" TIMESTAMP(3) NOT NULL,
+    "fechaDeFin" TIMESTAMP(3) NOT NULL,
+    "ultimaRenovacion" TIMESTAMP(3) NOT NULL,
+    "id_pago" TEXT NOT NULL,
+    "estado" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_CONTRATOS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_PAGOS" (
+    "id" TEXT NOT NULL,
+    "cantidadPagada" INTEGER NOT NULL,
+    "fechaPago" TIMESTAMP(3) NOT NULL,
+    "estadoPago" TEXT NOT NULL,
+    "id_cliente" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_PAGOS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_CLIENTES" (
+    "id" TEXT NOT NULL,
+    "DNI" TEXT NOT NULL,
+    "primerNombre" TEXT NOT NULL,
+    "segundoNombre" TEXT NOT NULL,
+    "otroNombre" TEXT NOT NULL,
+    "telefono" TEXT NOT NULL,
+    "telefono2" TEXT,
+    "correo" TEXT,
+    "fechaNacimiento" TIMESTAMP(3) NOT NULL,
+    "direccionDetallada" TEXT NOT NULL,
+    "fechaDeIngreso" TIMESTAMP(3) NOT NULL,
+    "id_municipio" TEXT NOT NULL,
+    "id_contrato" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_CLIENTES_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_INFORMACIONCHEQUEO" (
+    "id" TEXT NOT NULL,
+    "peso" DOUBLE PRECISION NOT NULL DEFAULT 0.00,
+    "estatura" TEXT NOT NULL,
+    "nivelDeMasa" TEXT,
+    "nivelDeGrasa" TEXT,
+    "fechaDelChequeo" TIMESTAMP(3) NOT NULL,
+    "id_cliente" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_INFORMACIONCHEQUEO_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_PROGRESO" (
+    "id" TEXT NOT NULL,
+    "peso" DOUBLE PRECISION DEFAULT 0.00,
+    "perdida" DOUBLE PRECISION DEFAULT 0.00,
+    "id_chequeo" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_PROGRESO_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_OBJETIVOSCATALOGOS" (
+    "id" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_OBJETIVOSCATALOGOS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_CANTIDADSERIES" (
+    "id" TEXT NOT NULL,
+    "cantidad" INTEGER NOT NULL,
+    "descripcion" TEXT,
+
+    CONSTRAINT "TBL_CANTIDADSERIES_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_TIEMPOSDEDESCANSO" (
+    "id" TEXT NOT NULL,
+    "tiempo" TEXT NOT NULL,
+    "tipo" TEXT NOT NULL,
+    "descripcion" TEXT,
+
+    CONSTRAINT "TBL_TIEMPOSDEDESCANSO_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_CANTIDADREPETICIONES" (
+    "id" TEXT NOT NULL,
+    "cantidad" INTEGER NOT NULL,
+    "descripcion" TEXT,
+
+    CONSTRAINT "TBL_CANTIDADREPETICIONES_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_TIPOSEJERCICIOS" (
+    "id" TEXT NOT NULL,
+    "nombreTipo" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_TIPOSEJERCICIOS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_EJERCICIO" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+    "imagen" TEXT,
+    "id_tipo" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_EJERCICIO_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_DIETAS" (
+    "id" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+    "id_objetivosCatalogos" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_DIETAS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_RUTINAS" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "id_tiemposDeDescanso" TEXT NOT NULL,
+    "id_cantidadRepeticiones" TEXT NOT NULL,
+    "id_cantidadSeries" TEXT NOT NULL,
+    "id_ejercicio" TEXT NOT NULL,
+    "id_objetivosCatalogos" TEXT NOT NULL,
+    "id_cliente" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_RUTINAS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_NETWORKINGCLIENT" (
+    "id" TEXT NOT NULL,
+    "ipAddress" TEXT NOT NULL,
+    "navegador" TEXT NOT NULL,
+    "ubicacion" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_NETWORKINGCLIENT_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_NETWORKINGLOGS" (
+    "id" TEXT NOT NULL,
+    "metodo" TEXT NOT NULL,
+    "consulta" TEXT NOT NULL,
+    "id_networkingClient" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_NETWORKINGLOGS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_NETWORKINGCORS" (
+    "id" TEXT NOT NULL,
+    "whiteList" TEXT[],
+    "blackList" TEXT[],
+
+    CONSTRAINT "TBL_NETWORKINGCORS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_PARAMETROSCATALOGOS" (
+    "id" TEXT NOT NULL,
+    "nombreApp" TEXT NOT NULL,
+    "temaApp" TEXT,
+    "cantidadIntentos" INTEGER NOT NULL,
+    "activarNotificaciones" BOOLEAN NOT NULL,
+    "logotipoApp" TEXT,
+
+    CONSTRAINT "TBL_PARAMETROSCATALOGOS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_PERMISOS" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+    "acciones" TEXT[],
+
+    CONSTRAINT "TBL_PERMISOS_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_ROLES" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "descripcion" TEXT NOT NULL,
+    "id_permisos" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_ROLES_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TBL_USUARIOS" (
+    "id" TEXT NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "correoElectronico" TEXT NOT NULL,
+    "contrasena" TEXT NOT NULL,
+    "ultimaConexion" TEXT NOT NULL,
+    "imagenPerfil" TEXT,
+    "estado" TEXT NOT NULL,
+    "id_role" TEXT NOT NULL,
+
+    CONSTRAINT "TBL_USUARIOS_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "TBL_DEPARTAMENTO" ADD CONSTRAINT "TBL_DEPARTAMENTO_id_pais_fkey" FOREIGN KEY ("id_pais") REFERENCES "TBL_PAIS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_MUNICIPIO" ADD CONSTRAINT "TBL_MUNICIPIO_id_departamento_fkey" FOREIGN KEY ("id_departamento") REFERENCES "TBL_DEPARTAMENTO"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_CONTRATOS" ADD CONSTRAINT "TBL_CONTRATOS_id_pago_fkey" FOREIGN KEY ("id_pago") REFERENCES "TBL_PAGOS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_PAGOS" ADD CONSTRAINT "TBL_PAGOS_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "TBL_CLIENTES"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_CLIENTES" ADD CONSTRAINT "TBL_CLIENTES_id_municipio_fkey" FOREIGN KEY ("id_municipio") REFERENCES "TBL_MUNICIPIO"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_CLIENTES" ADD CONSTRAINT "TBL_CLIENTES_id_contrato_fkey" FOREIGN KEY ("id_contrato") REFERENCES "TBL_CONTRATOS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_INFORMACIONCHEQUEO" ADD CONSTRAINT "TBL_INFORMACIONCHEQUEO_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "TBL_CLIENTES"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_PROGRESO" ADD CONSTRAINT "TBL_PROGRESO_id_chequeo_fkey" FOREIGN KEY ("id_chequeo") REFERENCES "TBL_INFORMACIONCHEQUEO"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_EJERCICIO" ADD CONSTRAINT "TBL_EJERCICIO_id_tipo_fkey" FOREIGN KEY ("id_tipo") REFERENCES "TBL_TIPOSEJERCICIOS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_DIETAS" ADD CONSTRAINT "TBL_DIETAS_id_objetivosCatalogos_fkey" FOREIGN KEY ("id_objetivosCatalogos") REFERENCES "TBL_OBJETIVOSCATALOGOS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_RUTINAS" ADD CONSTRAINT "TBL_RUTINAS_id_ejercicio_fkey" FOREIGN KEY ("id_ejercicio") REFERENCES "TBL_EJERCICIO"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_RUTINAS" ADD CONSTRAINT "TBL_RUTINAS_id_objetivosCatalogos_fkey" FOREIGN KEY ("id_objetivosCatalogos") REFERENCES "TBL_OBJETIVOSCATALOGOS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_RUTINAS" ADD CONSTRAINT "TBL_RUTINAS_id_cliente_fkey" FOREIGN KEY ("id_cliente") REFERENCES "TBL_CLIENTES"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_RUTINAS" ADD CONSTRAINT "TBL_RUTINAS_id_cantidadSeries_fkey" FOREIGN KEY ("id_cantidadSeries") REFERENCES "TBL_CANTIDADSERIES"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_RUTINAS" ADD CONSTRAINT "TBL_RUTINAS_id_cantidadRepeticiones_fkey" FOREIGN KEY ("id_cantidadRepeticiones") REFERENCES "TBL_CANTIDADREPETICIONES"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_RUTINAS" ADD CONSTRAINT "TBL_RUTINAS_id_tiemposDeDescanso_fkey" FOREIGN KEY ("id_tiemposDeDescanso") REFERENCES "TBL_TIEMPOSDEDESCANSO"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_NETWORKINGLOGS" ADD CONSTRAINT "TBL_NETWORKINGLOGS_id_networkingClient_fkey" FOREIGN KEY ("id_networkingClient") REFERENCES "TBL_NETWORKINGCLIENT"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_ROLES" ADD CONSTRAINT "TBL_ROLES_id_permisos_fkey" FOREIGN KEY ("id_permisos") REFERENCES "TBL_PERMISOS"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TBL_USUARIOS" ADD CONSTRAINT "TBL_USUARIOS_id_role_fkey" FOREIGN KEY ("id_role") REFERENCES "TBL_ROLES"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
