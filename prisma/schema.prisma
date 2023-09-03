@@ -12,55 +12,55 @@ datasource db {
 
 // TODO ------------------------- CONTROL DE CLIENTE --------------------------------------------------
 
-model Pais {
-  id           String         @id @default(uuid())
+model TBL_PAIS {
+  id           String             @id @default(uuid())
   nombre       String
   codigo       String
-  Departamento Departamento[]
+  Departamento TBL_DEPARTAMENTO[]
 }
 
-model Departamento {
+model TBL_DEPARTAMENTO {
   id      String @id @default(uuid())
   nombre  String
   codigo  String
   id_pais String
 
-  Pais      Pais        @relation(fields: [id_pais], references: [id])
-  Municipio Municipio[]
+  TBL_PAIS      TBL_PAIS        @relation(fields: [id_pais], references: [id])
+  TBL_MUNICIPIO TBL_MUNICIPIO[]
 }
 
-model Municipio {
-  id              String       @id @default(uuid())
-  nombre          String
-  codigo          String
-  id_departamento String
-  Departamento    Departamento @relation(fields: [id_departamento], references: [id])
-  Clientes        Clientes[]
+model TBL_MUNICIPIO {
+  id               String           @id @default(uuid())
+  nombre           String
+  codigo           String
+  id_departamento  String
+  TBL_DEPARTAMENTO TBL_DEPARTAMENTO @relation(fields: [id_departamento], references: [id])
+  TBL_CLIENTES     TBL_CLIENTES[]
 }
 
-model Contratos {
-  id               String     @id @default(uuid())
+model TBL_CONTRATOS {
+  id               String         @id @default(uuid())
   descripcion      String
   fechaDeInicio    DateTime
   fechaDeFin       DateTime
   ultimaRenovacion DateTime
   id_pago          String
   estado           String //* Vencido o Activo -> Activarselo una vez que el Cliente Pague
-  Pagos            Pagos      @relation(fields: [id_pago], references: [id])
-  Clientes         Clientes[]
+  TBL_PAGOS        TBL_PAGOS      @relation(fields: [id_pago], references: [id])
+  TBL_CLIENTES     TBL_CLIENTES[]
 }
 
-model Pagos {
-  id             String      @id @default(uuid())
+model TBL_PAGOS {
+  id             String          @id @default(uuid())
   cantidadPagada Int
   fechaPago      DateTime
   estadoPago     String //* Pagado o No
   id_cliente     String
-  Clientes       Clientes    @relation(fields: [id_cliente], references: [id])
-  Contratos      Contratos[]
+  TBL_CLIENTES   TBL_CLIENTES    @relation(fields: [id_cliente], references: [id])
+  TBL_CONTRATOS  TBL_CONTRATOS[]
 }
 
-model Clientes {
+model TBL_CLIENTES {
   id                 String   @id @default(uuid())
   DNI                String
   primerNombre       String
@@ -75,71 +75,94 @@ model Clientes {
   id_municipio       String
   id_contrato        String
 
-  Municipio Municipio @relation(fields: [id_municipio], references: [id])
-  Contratos Contratos @relation(fields: [id_contrato], references: [id])
+  Municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id])
+  Contratos TBL_CONTRATOS @relation(fields: [id_contrato], references: [id])
 
-  Pagos   Pagos[]
-  Rutinas Rutinas[]
+  TBL_PAGOS              TBL_PAGOS[]
+  TBL_RUTINAS            TBL_RUTINAS[]
+  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO[]
+}
+
+model TBL_INFORMACIONCHEQUEO {
+  id              String   @id @default(uuid())
+  peso            Float    @default(0.00)
+  estatura        String
+  nivelDeMasa     String?
+  nivelDeGrasa    String?
+  fechaDelChequeo DateTime
+  id_cliente      String
+
+  TBL_CLIENTES TBL_CLIENTES   @relation(fields: [id_cliente], references: [id])
+  TBL_PROGRESO TBL_PROGRESO[]
+}
+
+model TBL_PROGRESO {
+  id         String @id @default(uuid())
+  peso       Float? @default(0.00)
+  perdida    Float? @default(0.00)
+  id_chequeo String
+
+  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id])
 }
 
 // TODO ------------------------- FIN CONTROL DE CLIENTE --------------------------------------------------
 
 // TODO -------------------------  CONTROL DE EJERCICIOS Y DEMAS --------------------------------------------------
 
-model ObjetivosCatalogos {
-  id          String    @id @default(uuid())
+model TBL_OBJETIVOSCATALOGOS {
+  id          String        @id @default(uuid())
   descripcion String
-  Dietas      Dietas[]
-  Rutinas     Rutinas[]
+  TBL_DIETAS  TBL_DIETAS[]
+  TBL_RUTINAS TBL_RUTINAS[]
 }
 
-model CantidadSeries {
-  id          String    @id @default(uuid())
+model TBL_CANTIDADSERIES {
+  id          String        @id @default(uuid())
   cantidad    Int
   descripcion String?
-  Rutinas     Rutinas[]
+  TBL_RUTINAS TBL_RUTINAS[]
 }
 
-model TiemposDeDescanso {
-  id          String    @id @default(uuid())
+model TBL_TIEMPOSDEDESCANSO {
+  id          String        @id @default(uuid())
   tiempo      String
   tipo        String //* Por Reps o por Series
   descripcion String?
-  Rutinas     Rutinas[]
+  TBL_RUTINAS TBL_RUTINAS[]
 }
 
-model CantidadRepeticiones {
-  id          String    @id @default(uuid())
+model TBL_CANTIDADREPETICIONES {
+  id          String        @id @default(uuid())
   cantidad    Int
   descripcion String?
-  Rutinas     Rutinas[]
+  TBL_RUTINAS TBL_RUTINAS[]
 }
 
-model TiposEjercicios {
-  id          String      @id @default(uuid())
-  nombreTipo  String
-  descripcion String
-  Ejercicio   Ejercicio[]
+model TBL_TIPOSEJERCICIOS {
+  id            String          @id @default(uuid())
+  nombreTipo    String
+  descripcion   String
+  TBL_EJERCICIO TBL_EJERCICIO[]
 }
 
-model Ejercicio {
-  id              String          @id @default(uuid())
-  nombre          String
-  descripcion     String
-  imagen          String?
-  id_tipo         String
-  TiposEjercicios TiposEjercicios @relation(fields: [id_tipo], references: [id])
-  Rutinas         Rutinas[]
+model TBL_EJERCICIO {
+  id                  String              @id @default(uuid())
+  nombre              String
+  descripcion         String
+  imagen              String?
+  id_tipo             String
+  TBL_TIPOSEJERCICIOS TBL_TIPOSEJERCICIOS @relation(fields: [id_tipo], references: [id])
+  TBL_RUTINAS         TBL_RUTINAS[]
 }
 
-model Dietas {
-  id                    String             @id @default(uuid())
-  descripcion           String
-  id_objetivosCatalogos String
-  ObjetivosCatalogos    ObjetivosCatalogos @relation(fields: [id_objetivosCatalogos], references: [id])
+model TBL_DIETAS {
+  id                     String                 @id @default(uuid())
+  descripcion            String
+  id_objetivosCatalogos  String
+  TBL_OBJETIVOSCATALOGOS TBL_OBJETIVOSCATALOGOS @relation(fields: [id_objetivosCatalogos], references: [id])
 }
 
-model Rutinas {
+model TBL_RUTINAS {
   id     String @id @default(uuid())
   nombre String
 
@@ -150,36 +173,36 @@ model Rutinas {
   id_objetivosCatalogos   String
   id_cliente              String
 
-  Ejercicio            Ejercicio            @relation(fields: [id_ejercicio], references: [id])
-  ObjetivosCatalogos   ObjetivosCatalogos   @relation(fields: [id_objetivosCatalogos], references: [id])
-  Clientes             Clientes             @relation(fields: [id_cliente], references: [id])
-  CantidadSeries       CantidadSeries       @relation(fields: [id_cantidadSeries], references: [id])
-  CantidadRepeticiones CantidadRepeticiones @relation(fields: [id_cantidadRepeticiones], references: [id])
-  TiemposDeDescanso    TiemposDeDescanso    @relation(fields: [id_tiemposDeDescanso], references: [id])
+  TBL_EJERCICIO            TBL_EJERCICIO            @relation(fields: [id_ejercicio], references: [id])
+  TBL_OBJETIVOSCATALOGOS   TBL_OBJETIVOSCATALOGOS   @relation(fields: [id_objetivosCatalogos], references: [id])
+  TBL_CLIENTES             TBL_CLIENTES             @relation(fields: [id_cliente], references: [id])
+  TBL_CANTIDADSERIES       TBL_CANTIDADSERIES       @relation(fields: [id_cantidadSeries], references: [id])
+  TBL_CANTIDADREPETICIONES TBL_CANTIDADREPETICIONES @relation(fields: [id_cantidadRepeticiones], references: [id])
+  TBL_TIEMPOSDEDESCANSO    TBL_TIEMPOSDEDESCANSO    @relation(fields: [id_tiemposDeDescanso], references: [id])
 }
 
 // TODO ------------------------- FIN CONTROL DE EJERCICIOS Y DEMAS --------------------------------------------------
 
 // TODO ------------------------- MONITOREO DE SERVIDOR --------------------------------------------------
 
-model NetworkingClient {
-  id             String           @id @default(uuid())
-  ipAddress      String
-  navegador      String
-  ubicacion      String
-  NetworkingLogs NetworkingLogs[]
+model TBL_NETWORKINGCLIENT {
+  id                 String               @id @default(uuid())
+  ipAddress          String
+  navegador          String
+  ubicacion          String
+  TBL_NETWORKINGLOGS TBL_NETWORKINGLOGS[]
 }
 
-model NetworkingLogs {
+model TBL_NETWORKINGLOGS {
   id                  String @id @default(uuid())
   metodo              String //* POST, PUT, GET, DELETE, PATCH
   consulta            String //* body: {id: 1, name: 'pedrito', pass: 'pedrito123123'}
   id_networkingClient String
 
-  NetworkingClient NetworkingClient @relation(fields: [id_networkingClient], references: [id])
+  TBL_NETWORKINGCLIENT TBL_NETWORKINGCLIENT @relation(fields: [id_networkingClient], references: [id])
 }
 
-model NetworkingCors {
+model TBL_NETWORKINGCORS {
   id        String   @id @default(uuid())
   whiteList String[]
   blackList String[]
@@ -189,7 +212,7 @@ model NetworkingCors {
 
 // TODO -------------------------  CONTROL DE APLICACION ANDROID --------------------------------------------------
 
-model ParametrosCatalogos {
+model TBL_PARAMETROSCATALOGOS {
   id                    String  @id @default(uuid())
   nombreApp             String
   temaApp               String? //* Posiblemente lo termine quitando este...
@@ -202,25 +225,25 @@ model ParametrosCatalogos {
 
 // TODO -------------------------  CONTROL DE USUARIOS --------------------------------------------------
 
-model Permisos {
-  id          String   @id @default(uuid())
+model TBL_PERMISOS {
+  id          String      @id @default(uuid())
   nombre      String
   descripcion String
   acciones    String[]
-  Roles       Roles[]
+  TBL_ROLES   TBL_ROLES[]
 }
 
-model Roles {
+model TBL_ROLES {
   id          String @id @default(uuid())
   nombre      String
   descripcion String
   id_permisos String
 
-  Permisos Permisos   @relation(fields: [id_permisos], references: [id])
-  Usuarios Usuarios[]
+  TBL_PERMISOS TBL_PERMISOS   @relation(fields: [id_permisos], references: [id])
+  TBL_USUARIOS TBL_USUARIOS[]
 }
 
-model Usuarios {
+model TBL_USUARIOS {
   id                String  @id @default(uuid())
   nombre            String
   correoElectronico String
@@ -230,7 +253,7 @@ model Usuarios {
   estado            String // * Bloqueado, Activo, etc...
   id_role           String
 
-  Roles Roles @relation(fields: [id_role], references: [id])
+  TBL_ROLES TBL_ROLES @relation(fields: [id_role], references: [id])
 }
 
 // TODO ------------------------- FIN CONTROL DE USUARIOS  --------------------------------------------------
