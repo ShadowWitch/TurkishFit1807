@@ -105,6 +105,7 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.authRegistrar = authRegistrar;
+// TODO: LMOYA luego realizar recuperacion de contrasena por correo...
 const authRecuperacionPassword = (req, res) => {
     return res.json({
         ok: true,

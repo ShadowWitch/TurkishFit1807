@@ -7,7 +7,6 @@ import { ILoginUsuario, IRegistrarUsuario } from "../../types/usuarios.types";
 import { enviromentAuth } from "../../helpers/enviromentAuth.helper";
 
 export const authLogin = async (req: Request, res: Response) => {
-
     try {
         const { nombre, contrasena }: ILoginUsuario = req.body
 
@@ -108,6 +107,7 @@ export const authRegistrar = async (req: Request, res: Response) => {
     }
 };
 
+// TODO: LMOYA luego realizar recuperacion de contrasena por correo...
 export const authRecuperacionPassword = (req: Request, res: Response) => {
     return res.json({
         ok: true,
