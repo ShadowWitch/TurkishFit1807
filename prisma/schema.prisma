@@ -244,13 +244,13 @@ model TBL_ROLES {
 }
 
 model TBL_USUARIOS {
-  id                String  @id @default(uuid())
+  id                String    @id @default(uuid())
   nombre            String
   correoElectronico String
   contrasena        String
-  ultimaConexion    String
+  ultimaConexion    DateTime? @default(now())
   imagenPerfil      String?
-  estado            String // * Bloqueado, Activo, etc...
+  estado            String    @default("Activo") // * Bloqueado, Activo, etc...
   id_role           String
 
   TBL_ROLES TBL_ROLES @relation(fields: [id_role], references: [id])
