@@ -1,9 +1,10 @@
 import type { Request, Response } from "express";
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-
+import jwt, { Jwt } from 'jsonwebtoken'
 import { prisma } from "../../config/db";
 import { ILoginUsuario, IRegistrarUsuario } from "../../types/usuarios.types";
+import { enviromentAuth } from "../../helpers/enviromentAuth.helper";
 
 export const authLogin = async (req: Request, res: Response) => {
 
@@ -32,10 +33,15 @@ export const authLogin = async (req: Request, res: Response) => {
 
         respDB.contrasena = ':)' //* Engañar por molestar... Quitar password
 
+        let token = jwt.sign({
+            respDB
+        }, enviromentAuth.jwtSecretToken, { expiresIn: '2h' })
+
         return res.json({
             ok: true,
             msg: "Logeando",
-            data: respDB
+            data: respDB,
+            token
         });
 
     } catch (error: any) {
@@ -45,8 +51,6 @@ export const authLogin = async (req: Request, res: Response) => {
             msg: "error",
         });
     }
-
-
 };
 
 export const authRegistrar = async (req: Request, res: Response) => {
