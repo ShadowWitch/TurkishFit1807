@@ -7,6 +7,6 @@ export const routerMain = Router()
 
 routerMain.use('/clientes', routerControlClientes)
 routerMain.use('/geografia', routerGeografia)
-routerMain.use('/geografia', routerContratoPagos)
+routerMain.use('/contrato-pagos', routerContratoPagos)
 
 

@@ -5,14 +5,14 @@ import { addPagos, deletePagos, getOnePagos, updatePagos } from '../../controlle
 export const routerContratoPagos = Router()
 
 // * Contratos
-routerContratoPagos.get('/show', getOneContrato)
-routerContratoPagos.post('/add-one', addContrato)
-routerContratoPagos.put('/update-one', updateContrato)
-routerContratoPagos.delete('/delete-one', deleteContrato)
+routerContratoPagos.get('/contrato-show', getOneContrato)
+routerContratoPagos.post('/contrato-add-one', addContrato)
+routerContratoPagos.put('/contrato-update-one', updateContrato)
+routerContratoPagos.delete('/contrato-delete-one', deleteContrato)
 
 
 // * Pagos
-routerContratoPagos.get('/show-pago', getOnePagos)
-routerContratoPagos.post('/add-one', addPagos)
-routerContratoPagos.put('/update-one', updatePagos)
-routerContratoPagos.delete('/delete-one', deletePagos)
+routerContratoPagos.get('/pagos-show', getOnePagos)
+routerContratoPagos.post('/pagos-add-one', addPagos)
+routerContratoPagos.put('/pagos-update-one', updatePagos)
+routerContratoPagos.delete('/pagos-delete-one', deletePagos)

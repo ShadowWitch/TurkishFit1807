@@ -20,7 +20,7 @@ export const addPaises = (req: Request, res: Response) => {
 
     return res.json({
         ok: true,
-        msg: 'ver todos paises'
+        msg: 'ver todoqweqweqweqwes paises'
     })
 }
 

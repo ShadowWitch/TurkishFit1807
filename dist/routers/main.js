@@ -8,4 +8,4 @@ const contratosPagos_router_1 = require("./routerContratosPagos/contratosPagos.r
 exports.routerMain = (0, express_1.Router)();
 exports.routerMain.use('/clientes', controlClientes_router_1.routerControlClientes);
 exports.routerMain.use('/geografia', geografia_router_1.routerGeografia);
-exports.routerMain.use('/geografia', contratosPagos_router_1.routerContratoPagos);
+exports.routerMain.use('/contrato-pagos', contratosPagos_router_1.routerContratoPagos);

@@ -18,7 +18,7 @@ exports.getOnePaises = getOnePaises;
 const addPaises = (req, res) => {
     return res.json({
         ok: true,
-        msg: 'ver todos paises'
+        msg: 'ver todoqweqweqweqwes paises'
     });
 };
 exports.addPaises = addPaises;

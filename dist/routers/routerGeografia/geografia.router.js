@@ -7,17 +7,17 @@ const departamentos_controller_1 = require("../../controllers/controlGeografia/d
 const municipios_controller_1 = require("../../controllers/controlGeografia/municipios.controller");
 exports.routerGeografia = (0, express_1.Router)();
 // * Paises
-exports.routerGeografia.get('/show-all', pais_controller_1.getAllPaises);
-exports.routerGeografia.post('/add-one', pais_controller_1.addPaises);
-exports.routerGeografia.put('/update-one', pais_controller_1.updatePaises);
-exports.routerGeografia.delete('/delete-one', pais_controller_1.deletePaises);
+exports.routerGeografia.get('/pais-show-all', pais_controller_1.getAllPaises);
+exports.routerGeografia.post('/pais-add-one', pais_controller_1.addPaises);
+exports.routerGeografia.put('/pais-update-one', pais_controller_1.updatePaises);
+exports.routerGeografia.delete('/pais-delete-one', pais_controller_1.deletePaises);
 // * Deptos
-exports.routerGeografia.get('/show-all', departamentos_controller_1.getAllDepartamentos);
-exports.routerGeografia.post('/add-one', departamentos_controller_1.addDepartamentos);
-exports.routerGeografia.put('/update-one', departamentos_controller_1.updateDepartamentos);
-exports.routerGeografia.delete('/delete-one', departamentos_controller_1.deleteDepartamentos);
+exports.routerGeografia.get('/depto-show-all', departamentos_controller_1.getAllDepartamentos);
+exports.routerGeografia.post('/depto-add-one', departamentos_controller_1.addDepartamentos);
+exports.routerGeografia.put('/depto-update-one', departamentos_controller_1.updateDepartamentos);
+exports.routerGeografia.delete('/depto-delete-one', departamentos_controller_1.deleteDepartamentos);
 // * Municipios
-exports.routerGeografia.get('/show-all', municipios_controller_1.getAllMunicipios);
-exports.routerGeografia.post('/add-one', municipios_controller_1.addMunicipios);
-exports.routerGeografia.put('/update-one', municipios_controller_1.updateMunicipios);
-exports.routerGeografia.delete('/delete-one', municipios_controller_1.deleteMunicipios);
+exports.routerGeografia.get('/municipio-show-all', municipios_controller_1.getAllMunicipios);
+exports.routerGeografia.post('/municipio-add-one', municipios_controller_1.addMunicipios);
+exports.routerGeografia.put('/municipio-update-one', municipios_controller_1.updateMunicipios);
+exports.routerGeografia.delete('/municipio-delete-one', municipios_controller_1.deleteMunicipios);

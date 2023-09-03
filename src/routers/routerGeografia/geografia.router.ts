@@ -6,20 +6,20 @@ import { addMunicipios, deleteMunicipios, getAllMunicipios, updateMunicipios } f
 export const routerGeografia = Router()
 
 // * Paises
-routerGeografia.get('/show-all', getAllPaises)
-routerGeografia.post('/add-one', addPaises)
-routerGeografia.put('/update-one', updatePaises)
-routerGeografia.delete('/delete-one', deletePaises)
+routerGeografia.get('/pais-show-all', getAllPaises)
+routerGeografia.post('/pais-add-one', addPaises)
+routerGeografia.put('/pais-update-one', updatePaises)
+routerGeografia.delete('/pais-delete-one', deletePaises)
 
 
 // * Deptos
-routerGeografia.get('/show-all', getAllDepartamentos)
-routerGeografia.post('/add-one', addDepartamentos)
-routerGeografia.put('/update-one', updateDepartamentos)
-routerGeografia.delete('/delete-one', deleteDepartamentos)
+routerGeografia.get('/depto-show-all', getAllDepartamentos)
+routerGeografia.post('/depto-add-one', addDepartamentos)
+routerGeografia.put('/depto-update-one', updateDepartamentos)
+routerGeografia.delete('/depto-delete-one', deleteDepartamentos)
 
 // * Municipios
-routerGeografia.get('/show-all', getAllMunicipios)
-routerGeografia.post('/add-one', addMunicipios)
-routerGeografia.put('/update-one', updateMunicipios)
-routerGeografia.delete('/delete-one', deleteMunicipios)
+routerGeografia.get('/municipio-show-all', getAllMunicipios)
+routerGeografia.post('/municipio-add-one', addMunicipios)
+routerGeografia.put('/municipio-update-one', updateMunicipios)
+routerGeografia.delete('/municipio-delete-one', deleteMunicipios)
