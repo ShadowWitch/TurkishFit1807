@@ -15,12 +15,42 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.authRecuperacionPassword = exports.authRegistrar = exports.authLogin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const db_1 = require("../../config/db");
-const authLogin = (req, res) => {
-    return res.json({
-        ok: true,
-        msg: "Logeando",
-    });
-};
+const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { nombre, contrasena } = req.body;
+        const respDB = yield db_1.prisma.tBL_USUARIOS.findFirst({
+            where: {
+                nombre,
+            }
+        });
+        if (!respDB)
+            return res.status(401).json({
+                ok: true,
+                message: 'Usuario o contraseña no valido',
+                data: null
+            });
+        const verificarContrasena = yield bcrypt_1.default.compareSync(contrasena, respDB.contrasena);
+        if (!verificarContrasena)
+            return res.status(401).json({
+                ok: true,
+                message: 'Usuario o contraseña no valido',
+                data: null
+            });
+        respDB.contrasena = ':)'; //* Engañar por molestar... Quitar password
+        return res.json({
+            ok: true,
+            msg: "Logeando",
+            data: respDB
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.json({
+            ok: false,
+            msg: "error",
+        });
+    }
+});
 exports.authLogin = authLogin;
 const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -30,10 +60,10 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             where: {
                 OR: [
                     {
-                        nombre: nombre.toString().toLowerCase(),
+                        nombre: nombre.toLowerCase(),
                     },
                     {
-                        correoElectronico: correoElectronico.toString().toLowerCase()
+                        correoElectronico: correoElectronico.toLowerCase()
                     }
                 ]
             }
@@ -45,13 +75,13 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 data: null
             });
         // * Registrar Usuario
-        const contrasenaEncriptada = yield bcrypt_1.default.hashSync(contrasena.toString().toLowerCase(), 10);
+        const contrasenaEncriptada = yield bcrypt_1.default.hashSync(contrasena.toLowerCase(), 10);
         const respDB = yield db_1.prisma.tBL_USUARIOS.create({
             data: {
-                nombre: nombre.toString().toLocaleLowerCase(),
+                nombre: nombre.toLowerCase(),
                 contrasena: contrasenaEncriptada,
-                correoElectronico: correoElectronico.toString(),
-                id_role: id_role.toString(),
+                correoElectronico: correoElectronico,
+                id_role: id_role,
             }
         });
         return res.json({

@@ -3,13 +3,50 @@ import bcrypt from 'bcrypt'
 import { z } from 'zod'
 
 import { prisma } from "../../config/db";
-import { IRegistrarUsuario } from "../../types/registrarUsuarios.types";
+import { ILoginUsuario, IRegistrarUsuario } from "../../types/usuarios.types";
 
-export const authLogin = (req: Request, res: Response) => {
-    return res.json({
-        ok: true,
-        msg: "Logeando",
-    });
+export const authLogin = async (req: Request, res: Response) => {
+
+    try {
+        const { nombre, contrasena }: ILoginUsuario = req.body
+
+        const respDB = await prisma.tBL_USUARIOS.findFirst({
+            where: {
+                nombre,
+            }
+        })
+
+        if (!respDB) return res.status(401).json({
+            ok: true,
+            message: 'Usuario o contraseña no valido',
+            data: null
+        })
+
+        const verificarContrasena = await bcrypt.compareSync(contrasena, respDB.contrasena)
+
+        if (!verificarContrasena) return res.status(401).json({
+            ok: true,
+            message: 'Usuario o contraseña no valido',
+            data: null
+        })
+
+        respDB.contrasena = ':)' //* Engañar por molestar... Quitar password
+
+        return res.json({
+            ok: true,
+            msg: "Logeando",
+            data: respDB
+        });
+
+    } catch (error: any) {
+        console.log(error);
+        return res.json({
+            ok: false,
+            msg: "error",
+        });
+    }
+
+
 };
 
 export const authRegistrar = async (req: Request, res: Response) => {
@@ -27,10 +64,10 @@ export const authRegistrar = async (req: Request, res: Response) => {
             where: {
                 OR: [
                     {
-                        nombre: nombre.toString().toLowerCase(),
+                        nombre: nombre.toLowerCase(),
                     },
                     {
-                        correoElectronico: correoElectronico.toString().toLowerCase()
+                        correoElectronico: correoElectronico.toLowerCase()
                     }
                 ]
             }
@@ -43,13 +80,13 @@ export const authRegistrar = async (req: Request, res: Response) => {
         })
 
         // * Registrar Usuario
-        const contrasenaEncriptada = await bcrypt.hashSync(contrasena.toString().toLowerCase(), 10)
+        const contrasenaEncriptada = await bcrypt.hashSync(contrasena.toLowerCase(), 10)
         const respDB = await prisma.tBL_USUARIOS.create({
             data: {
-                nombre: nombre.toString().toLocaleLowerCase(),
+                nombre: nombre.toLowerCase(),
                 contrasena: contrasenaEncriptada,
-                correoElectronico: correoElectronico.toString(),
-                id_role: id_role.toString(),
+                correoElectronico: correoElectronico,
+                id_role: id_role,
             }
         })
 
