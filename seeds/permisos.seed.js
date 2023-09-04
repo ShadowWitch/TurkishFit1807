@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const db_1 = require("../config/db");
+exports.addListaPermisos = void 0;
+const db_1 = require("../../../src/config/db");
 const listaPermisos = [
     {
         nombre: 'Agregar',
@@ -43,4 +44,4 @@ const addListaPermisos = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log('Seed Roles >>', error);
     }
 });
-addListaPermisos();
+exports.addListaPermisos = addListaPermisos;
