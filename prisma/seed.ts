@@ -73,6 +73,7 @@ const addRolesSeed = async () => {
     }
 }
 
+// TODO LMOYA : Tengo que revisar bien el seeder de insertar usuarios manana...
 const addUsuariosSeed = async () => {
     try {
         let listaUsuariosPruebaAca: IRegistrarUsuario[] = []
