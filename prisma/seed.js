@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../src/config/db");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const addPermisosSeed = () => __awaiter(void 0, void 0, void 0, function* () {
     const ListaPermisos = [
         {
@@ -73,17 +77,26 @@ const addRolesSeed = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log(error);
     }
 });
+// TODO LMOYA : Tengo que revisar bien el seeder de insertar usuarios manana...
 const addUsuariosSeed = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        let listaUsuariosPruebaAca = [];
         const listaRoles = yield db_1.prisma.tBL_ROLES.findMany();
-        // const listaUsuarios: IRegistrarUsuario[] = await listaRoles.map(async (e) => ({
-        //     nombre: `Juan${e.nombre}`,
-        //     contrasena: await bcrypt.hashSync('admin', 5),
-        //     correoElectronico: `${e.nombre}@gmail.com`,
-        //     repetirContrasena: 'admin',
-        //     id_role: e.id
-        // }))
-        // console.log('RESP LISTA USER >> ', JSON.stringify(listaUsuarios, null, 3));
+        yield listaRoles.forEach((e, index) => __awaiter(void 0, void 0, void 0, function* () {
+            const hashContrasena = yield bcrypt_1.default.hashSync('admin', 5);
+            const data = {
+                nombre: `Juan${e.nombre}`,
+                contrasena: hashContrasena,
+                correoElectronico: `${e.nombre}@gmail.com`,
+                repetirContrasena: 'admin',
+                id_role: e.id
+            };
+            listaUsuariosPruebaAca.push(data);
+        }));
+        const respDB = yield db_1.prisma.tBL_USUARIOS.createMany({
+            data: listaUsuariosPruebaAca
+        });
+        console.log('Usuarios seed!');
     }
     catch (error) {
         console.log(error);
