@@ -12,10 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteRoles = exports.updateRoles = exports.addRoles = exports.getOneRoles = exports.getAllRoles = void 0;
 const db_1 = require("../../config/db");
 const getAllRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    return res.json({
-        ok: true,
-        msg: "Lista roles",
-    });
+    try {
+        const respDB = yield db_1.prisma.tBL_ROLES.findMany({});
+        return res.json({
+            ok: true,
+            message: "",
+            data: respDB,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.json({
+            ok: false,
+            msg: "error",
+        });
+    }
 });
 exports.getAllRoles = getAllRoles;
 const getOneRoles = (req, res) => {

@@ -101,6 +101,7 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.json({
             ok: false,
             msg: "error",
+            data: null,
         });
     }
 });

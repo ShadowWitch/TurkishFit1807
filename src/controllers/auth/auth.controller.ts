@@ -115,6 +115,7 @@ export const authRegistrar = async (req: Request, res: Response) => {
     return res.json({
       ok: false,
       msg: "error",
+      data: null,
     });
   }
 };

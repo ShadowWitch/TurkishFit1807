@@ -13,6 +13,12 @@ exports.deletePermisos = exports.updatePermisos = exports.addPermisos = exports.
 const db_1 = require("../../config/db");
 const getAllPermisos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const respDB = yield db_1.prisma.tBL_PERMISOS.findMany({});
+        return res.json({
+            ok: true,
+            message: "",
+            data: respDB,
+        });
     }
     catch (error) {
         console.log(error);

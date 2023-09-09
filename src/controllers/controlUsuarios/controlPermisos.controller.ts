@@ -1,10 +1,16 @@
 import type { Request, Response } from "express";
 import { IPermisos } from "../../types/permisos.types";
 import { prisma } from "../../config/db";
-import { parseLowerCase } from "../../helpers/parserToLowerCase.helper";
 
 export const getAllPermisos = async (req: Request, res: Response) => {
   try {
+    const respDB = await prisma.tBL_PERMISOS.findMany({});
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respDB,
+    });
   } catch (error) {
     console.log(error);
     return res.json({
