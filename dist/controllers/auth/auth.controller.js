@@ -23,30 +23,30 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const respDB = yield db_1.prisma.tBL_USUARIOS.findFirst({
             where: {
                 nombre,
-            }
+            },
         });
         if (!respDB)
             return res.status(401).json({
                 ok: true,
-                message: 'Usuario o contraseña no valido',
-                data: null
+                message: "Usuario o contraseña no valido",
+                data: null,
             });
         const verificarContrasena = yield bcrypt_1.default.compareSync(contrasena, respDB.contrasena);
         if (!verificarContrasena)
             return res.status(401).json({
                 ok: true,
-                message: 'Usuario o contraseña no valido',
-                data: null
+                message: "Usuario o contraseña no valido",
+                data: null,
             });
-        respDB.contrasena = ':)'; //* Engañar por molestar... Quitar password
+        respDB.contrasena = ":)"; //* Engañar por molestar... Quitar password
         let token = jsonwebtoken_1.default.sign({
-            respDB
-        }, enviromentAuth_helper_1.enviromentAuth.jwtSecretToken, { expiresIn: '2h' });
+            respDB,
+        }, enviromentAuth_helper_1.enviromentAuth.jwtSecretToken, { expiresIn: "2h" });
         return res.json({
             ok: true,
             msg: "Logeando",
             data: respDB,
-            token
+            token,
         });
     }
     catch (error) {
@@ -69,16 +69,16 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                         nombre: nombre.toLowerCase(),
                     },
                     {
-                        correoElectronico: correoElectronico.toLowerCase()
-                    }
-                ]
-            }
+                        correoElectronico: correoElectronico.toLowerCase(),
+                    },
+                ],
+            },
         });
         if (verificacionUsuario)
             return res.status(400).json({
                 ok: true,
-                message: 'Ese usuario o correo ya se encuentra en uso',
-                data: null
+                message: "Ese usuario o correo ya se encuentra en uso",
+                data: null,
             });
         // * Registrar Usuario
         const contrasenaEncriptada = yield bcrypt_1.default.hashSync(contrasena.toLowerCase(), 10);
@@ -88,12 +88,12 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 contrasena: contrasenaEncriptada,
                 correoElectronico: correoElectronico,
                 id_role: id_role,
-            }
+            },
         });
         return res.json({
             ok: true,
-            message: 'Usuario creado',
-            data: respDB
+            message: "Usuario creado",
+            data: respDB,
         });
     }
     catch (error) {
@@ -101,6 +101,7 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.json({
             ok: false,
             msg: "error",
+            data: null,
         });
     }
 });
@@ -110,7 +111,7 @@ const authRecuperacionPassword = (req, res) => {
     return res.json({
         ok: true,
         msg: "Recuperar Contrasena",
-        data: null
+        data: null,
     });
 };
 exports.authRecuperacionPassword = authRecuperacionPassword;
