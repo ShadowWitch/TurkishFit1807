@@ -65,6 +65,8 @@ model TBL_CLIENTES {
   DNI                String
   primerNombre       String
   segundoNombre      String
+  primerApellido     String
+  segundoApellido    String?
   otroNombre         String
   telefono           String
   telefono2          String?
