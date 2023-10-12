@@ -65,6 +65,8 @@ model TBL_CLIENTES {
   DNI                String
   primerNombre       String
   segundoNombre      String
+  primerApellido     String
+  segundoApellido    String?
   otroNombre         String
   telefono           String
   telefono2          String?
@@ -116,28 +118,6 @@ model TBL_OBJETIVOSCATALOGOS {
   TBL_RUTINAS TBL_RUTINAS[]
 }
 
-model TBL_CANTIDADSERIES {
-  id          String        @id @default(uuid())
-  cantidad    Int
-  descripcion String?
-  TBL_RUTINAS TBL_RUTINAS[]
-}
-
-model TBL_TIEMPOSDEDESCANSO {
-  id          String        @id @default(uuid())
-  tiempo      String
-  tipo        String //* Por Reps o por Series
-  descripcion String?
-  TBL_RUTINAS TBL_RUTINAS[]
-}
-
-model TBL_CANTIDADREPETICIONES {
-  id          String        @id @default(uuid())
-  cantidad    Int
-  descripcion String?
-  TBL_RUTINAS TBL_RUTINAS[]
-}
-
 model TBL_TIPOSEJERCICIOS {
   id            String          @id @default(uuid())
   nombreTipo    String
@@ -163,22 +143,15 @@ model TBL_DIETAS {
 }
 
 model TBL_RUTINAS {
-  id     String @id @default(uuid())
-  nombre String
+  id                    String @id @default(uuid())
+  nombre                String
+  id_ejercicio          String
+  id_objetivosCatalogos String
+  id_cliente            String
 
-  id_tiemposDeDescanso    String
-  id_cantidadRepeticiones String
-  id_cantidadSeries       String
-  id_ejercicio            String
-  id_objetivosCatalogos   String
-  id_cliente              String
-
-  TBL_EJERCICIO            TBL_EJERCICIO            @relation(fields: [id_ejercicio], references: [id])
-  TBL_OBJETIVOSCATALOGOS   TBL_OBJETIVOSCATALOGOS   @relation(fields: [id_objetivosCatalogos], references: [id])
-  TBL_CLIENTES             TBL_CLIENTES             @relation(fields: [id_cliente], references: [id])
-  TBL_CANTIDADSERIES       TBL_CANTIDADSERIES       @relation(fields: [id_cantidadSeries], references: [id])
-  TBL_CANTIDADREPETICIONES TBL_CANTIDADREPETICIONES @relation(fields: [id_cantidadRepeticiones], references: [id])
-  TBL_TIEMPOSDEDESCANSO    TBL_TIEMPOSDEDESCANSO    @relation(fields: [id_tiemposDeDescanso], references: [id])
+  TBL_EJERCICIO          TBL_EJERCICIO          @relation(fields: [id_ejercicio], references: [id])
+  TBL_OBJETIVOSCATALOGOS TBL_OBJETIVOSCATALOGOS @relation(fields: [id_objetivosCatalogos], references: [id])
+  TBL_CLIENTES           TBL_CLIENTES           @relation(fields: [id_cliente], references: [id])
 }
 
 // TODO ------------------------- FIN CONTROL DE EJERCICIOS Y DEMAS --------------------------------------------------
@@ -226,21 +199,28 @@ model TBL_PARAMETROSCATALOGOS {
 // TODO -------------------------  CONTROL DE USUARIOS --------------------------------------------------
 
 model TBL_PERMISOS {
-  id          String      @id @default(uuid())
-  nombre      String
-  descripcion String
-  acciones    String[]
-  TBL_ROLES   TBL_ROLES[]
+  id                     String                   @id @default(uuid())
+  nombre                 String
+  descripcion            String
+  acciones               String[]
+  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
+}
+
+model TBL_REL_PERMISOS_ROLES {
+  id         String @id @default(uuid())
+  id_role    String
+  id_permiso String
+
+  TBL_ROLES    TBL_ROLES    @relation(fields: [id_role], references: [id])
+  TBL_PERMISOS TBL_PERMISOS @relation(fields: [id_permiso], references: [id])
 }
 
 model TBL_ROLES {
-  id          String @id @default(uuid())
-  nombre      String
-  descripcion String
-  id_permisos String
-
-  TBL_PERMISOS TBL_PERMISOS   @relation(fields: [id_permisos], references: [id])
-  TBL_USUARIOS TBL_USUARIOS[]
+  id                     String                   @id @default(uuid())
+  nombre                 String
+  descripcion            String
+  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
+  TBL_USUARIOS           TBL_USUARIOS[]
 }
 
 model TBL_USUARIOS {

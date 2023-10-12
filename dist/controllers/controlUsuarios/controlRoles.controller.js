@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteRoles = exports.updateRoles = exports.addRoles = exports.getOneRoles = exports.getAllRoles = void 0;
 const db_1 = require("../../config/db");
+const errorMessage_helper_1 = require("../../helpers/errorMessage.helper");
 const getAllRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const respDB = yield db_1.prisma.tBL_ROLES.findMany({});
@@ -22,10 +23,7 @@ const getAllRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         console.log(error);
-        return res.json({
-            ok: false,
-            msg: "error",
-        });
+        return res.json((0, errorMessage_helper_1.errorMessage)());
     }
 });
 exports.getAllRoles = getAllRoles;
@@ -43,7 +41,6 @@ const addRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             data: {
                 nombre,
                 descripcion,
-                id_permisos,
             },
         });
         if (!respDB)

@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../config/db";
 import { IRoles } from "../../types/roles.types";
+import { errorMessage } from "../../helpers/errorMessage.helper";
 
 export const getAllRoles = async (req: Request, res: Response) => {
   try {
@@ -13,10 +14,7 @@ export const getAllRoles = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    return res.json({
-      ok: false,
-      msg: "error",
-    });
+    return res.json(errorMessage());
   }
 };
 
@@ -35,7 +33,6 @@ export const addRoles = async (req: Request, res: Response) => {
       data: {
         nombre,
         descripcion,
-        id_permisos,
       },
     });
 
