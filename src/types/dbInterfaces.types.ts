@@ -12,9 +12,8 @@ export interface IClientes {
   fechaDeIngreso: string;
 
   id_municipio: string;
-  id_contrato: string;
+  id_contrato?: string;
 }
-
 
 export interface IChequeo extends IClientes {
   peso: string;
@@ -24,28 +23,24 @@ export interface IChequeo extends IClientes {
   fechaDelChequeo: string;
 }
 
-export interface IContrato extends IChequeo {
+export interface IContrato {
   descripcion: string | undefined;
   fechaDeInicio: string;
   fechaDeFin: string;
-  ultimaRenovacion: string
-  id_pago: string;
-  estado: 'Activo' | ' Vencido'
-
+  ultimaRenovacion: string;
+  estado: "Activo" | " Vencido";
 }
 
 export interface IPermisos {
   nombre: string;
-  descripcion: string
-  acciones: string[]
+  descripcion: string;
+  acciones: string[];
 }
 
 export interface IRELPermisosRoles {
   id_role: string;
   id_permiso: string;
-
 }
-
 
 export interface IMunicipios {
   nombre: string;

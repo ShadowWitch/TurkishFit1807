@@ -3,7 +3,6 @@ import { prisma } from "../../config/db";
 import { errorMessage } from "../../helpers/errorMessage.helper";
 import { IChequeo, IClientes, IContrato } from "../../types/dbInterfaces.types";
 
-
 export const getAllClientes = async (req: Request, res: Response) => {
   try {
     const respDB = await prisma.tBL_CLIENTES.findMany({});
@@ -44,7 +43,6 @@ export const addClientes = async (req: Request, res: Response) => {
       DNI,
       fechaDeIngreso,
       fechaNacimiento,
-      id_contrato,
       id_municipio,
       otroNombre = "",
       primerApellido,
@@ -59,7 +57,6 @@ export const addClientes = async (req: Request, res: Response) => {
       nivelDeMasa,
       peso,
     }: IChequeo = req.body;
-
 
     const newClient = await prisma.tBL_CLIENTES.create({
       data: {
@@ -83,10 +80,9 @@ export const addClientes = async (req: Request, res: Response) => {
         nivelDeGrasa,
         nivelDeMasa,
         peso,
-        id_cliente: newClient.id
-      }
-    })
-
+        id_cliente: newClient.id,
+      },
+    });
 
     if (!newChequeo) throw new Error("error");
 
@@ -95,12 +91,12 @@ export const addClientes = async (req: Request, res: Response) => {
       message: "Cliente creado",
       data: {
         cliente: newClient,
-        chequeo: newChequeo
+        chequeo: newChequeo,
       },
     });
   } catch (error) {
     console.log(error);
-    return res.json(errorMessage());
+    return res.json(errorMessage("Error en la consulta"));
   }
 };
 

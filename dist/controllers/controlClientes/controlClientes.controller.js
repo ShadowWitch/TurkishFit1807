@@ -47,7 +47,7 @@ const getOneClientes = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getOneClientes = getOneClientes;
 const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { DNI, fechaDeIngreso, fechaNacimiento, id_contrato, id_municipio, otroNombre = "", primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, estatura, fechaDelChequeo, nivelDeGrasa, nivelDeMasa, peso, } = req.body;
+        const { DNI, fechaDeIngreso, fechaNacimiento, id_municipio, otroNombre = "", primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, estatura, fechaDelChequeo, nivelDeGrasa, nivelDeMasa, peso, } = req.body;
         const newClient = yield db_1.prisma.tBL_CLIENTES.create({
             data: {
                 DNI,
@@ -69,8 +69,8 @@ const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 nivelDeGrasa,
                 nivelDeMasa,
                 peso,
-                id_cliente: newClient.id
-            }
+                id_cliente: newClient.id,
+            },
         });
         if (!newChequeo)
             throw new Error("error");
@@ -79,13 +79,13 @@ const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             message: "Cliente creado",
             data: {
                 cliente: newClient,
-                chequeo: newChequeo
+                chequeo: newChequeo,
             },
         });
     }
     catch (error) {
         console.log(error);
-        return res.json((0, errorMessage_helper_1.errorMessage)());
+        return res.json((0, errorMessage_helper_1.errorMessage)("Error en la consulta"));
     }
 });
 exports.addClientes = addClientes;
