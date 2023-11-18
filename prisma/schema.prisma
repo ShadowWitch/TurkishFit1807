@@ -17,6 +17,9 @@ model TBL_USUARIOS {
   estado            String?   @default("Activo") // * Bloqueado, Activo, etc...
   id_rel_role       String
 
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
   TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES @relation(fields: [id_rel_role], references: [id])
 }
 
@@ -28,10 +31,14 @@ model TBL_ROLES {
 }
 
 model TBL_PERMISOS {
-  id                     String                   @id @default(uuid())
-  nombre                 String
-  descripcion            String
-  acciones               String[]
+  id          String   @id @default(uuid())
+  nombre      String
+  descripcion String
+  acciones    String[]
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
   TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
 }
 
@@ -46,68 +53,63 @@ model TBL_REL_PERMISOS_ROLES {
 }
 
 model TBL_CLIENTES {
-  id                 String   @id @default(uuid())
-  DNI                String
-  primerNombre       String
-  segundoNombre      String
-  primerApellido     String
-  segundoApellido    String?
-  otroNombre         String
-  telefono           String
-  telefono2          String?
-  correo             String?
-  fechaNacimiento    DateTime
-  direccionDetallada String
-  fechaDeIngreso     DateTime //* Se guardara la fecha actual en la que se registro el cliente
-  id_municipio       String
-  id_contrato        String
+  id              String   @id @default(uuid())
+  DNI             String   @unique
+  primerNombre    String
+  segundoNombre   String
+  primerApellido  String
+  segundoApellido String?
+  otroNombre      String
+  telefono        String
+  fechaNacimiento DateTime
+  fechaDeIngreso  DateTime //* Se guardara la fecha actual en la que se registro el cliente
+  id_municipio    String
+  id_contrato     String?
 
-  Municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id])
-  Contratos TBL_CONTRATOS @relation(fields: [id_contrato], references: [id])
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 
-  TBL_PAGOS              TBL_PAGOS[]
+  Municipio TBL_MUNICIPIO  @relation(fields: [id_municipio], references: [id])
+  Contratos TBL_CONTRATOS? @relation(fields: [id_contrato], references: [id])
+
   TBL_RUTINAS            TBL_RUTINAS[]
   TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO[]
 }
 
 model TBL_MUNICIPIO {
-  id              String         @id @default(uuid())
-  nombre          String
-  codigo          String
-  id_departamento String
-  TBL_CLIENTES    TBL_CLIENTES[]
+  id     String @id @default(uuid())
+  nombre String
+  codigo String @unique
+
+  createdAt    DateTime?      @default(now())
+  updatedAt    DateTime?      @updatedAt
+  TBL_CLIENTES TBL_CLIENTES[]
 }
 
 model TBL_CONTRATOS {
-  id               String         @id @default(uuid())
+  id               String   @id @default(uuid())
   descripcion      String?
   fechaDeInicio    DateTime
   fechaDeFin       DateTime
   ultimaRenovacion DateTime
-  id_pago          String
   estado           String //* Vencido o Activo -> Activarselo una vez que el Cliente Pague
-  TBL_PAGOS        TBL_PAGOS      @relation(fields: [id_pago], references: [id])
-  TBL_CLIENTES     TBL_CLIENTES[]
-}
 
-model TBL_PAGOS {
-  id             String          @id @default(uuid())
-  cantidadPagada Int
-  fechaPago      DateTime
-  estadoPago     String //* Pagado o No - Esta se guardar por defecto en pagado una vez se haga el pago y se volvera a poner en NO pagado cuando termine su contrato.
-  id_cliente     String // TODO Se guardara automaticamente...
-  TBL_CLIENTES   TBL_CLIENTES    @relation(fields: [id_cliente], references: [id])
-  TBL_CONTRATOS  TBL_CONTRATOS[]
+  createdAt    DateTime?      @default(now())
+  updatedAt    DateTime?      @updatedAt
+  TBL_CLIENTES TBL_CLIENTES[]
 }
 
 model TBL_INFORMACIONCHEQUEO {
   id              String   @id @default(uuid())
-  peso            Float    @default(0.00)
+  peso            String
   estatura        String
   nivelDeMasa     String?
   nivelDeGrasa    String?
   fechaDelChequeo DateTime
   id_cliente      String // TODO Se guardara automaticamente al hacer el chequeo...
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 
   TBL_CLIENTES TBL_CLIENTES   @relation(fields: [id_cliente], references: [id])
   TBL_PROGRESO TBL_PROGRESO[]
@@ -118,6 +120,9 @@ model TBL_PROGRESO {
   peso       Float? @default(0.00)
   perdida    Float? @default(0.00)
   id_chequeo String
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 
   TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id])
 }
@@ -133,24 +138,35 @@ model TBL_RUTINAS {
   id_objetivosCatalogos String
   id_cliente            String
 
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
   TBL_EJERCICIO TBL_EJERCICIO @relation(fields: [id_ejercicio], references: [id])
   TBL_CLIENTES  TBL_CLIENTES  @relation(fields: [id_cliente], references: [id])
 }
 
 model TBL_EJERCICIO {
-  id                  String              @id @default(uuid())
-  nombre              String
-  descripcion         String
-  imagen              String?
-  id_tipo             String
+  id          String  @id @default(uuid())
+  nombre      String
+  descripcion String
+  imagen      String?
+  id_tipo     String
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
   TBL_TIPOSEJERCICIOS TBL_TIPOSEJERCICIOS @relation(fields: [id_tipo], references: [id])
   TBL_RUTINAS         TBL_RUTINAS[]
 }
 
 model TBL_TIPOSEJERCICIOS {
-  id            String          @id @default(uuid())
-  nombreTipo    String
-  descripcion   String
+  id          String @id @default(uuid())
+  nombreTipo  String
+  descripcion String
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
   TBL_EJERCICIO TBL_EJERCICIO[]
 }
 

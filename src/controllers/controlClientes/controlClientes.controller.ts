@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../config/db";
 import { errorMessage } from "../../helpers/errorMessage.helper";
-import { IClientes } from "../../types/dbInterfaces.types";
+import { IChequeo, IClientes, IContrato } from "../../types/dbInterfaces.types";
+
 
 export const getAllClientes = async (req: Request, res: Response) => {
   try {
@@ -41,8 +42,6 @@ export const addClientes = async (req: Request, res: Response) => {
   try {
     const {
       DNI,
-      correo,
-      direccionDetallada,
       fechaDeIngreso,
       fechaNacimiento,
       id_contrato,
@@ -53,17 +52,20 @@ export const addClientes = async (req: Request, res: Response) => {
       segundoApellido,
       segundoNombre,
       telefono,
-      telefono2,
-    }: IClientes = req.body;
 
-    const respDB = await prisma.tBL_CLIENTES.create({
+      estatura,
+      fechaDelChequeo,
+      nivelDeGrasa,
+      nivelDeMasa,
+      peso,
+    }: IChequeo = req.body;
+
+
+    const newClient = await prisma.tBL_CLIENTES.create({
       data: {
         DNI,
-        correo,
-        direccionDetallada,
-        fechaDeIngreso,
-        fechaNacimiento,
-        id_contrato,
+        fechaDeIngreso: new Date(fechaDeIngreso),
+        fechaNacimiento: new Date(fechaNacimiento),
         id_municipio,
         otroNombre,
         primerApellido,
@@ -71,15 +73,30 @@ export const addClientes = async (req: Request, res: Response) => {
         segundoApellido,
         segundoNombre,
         telefono,
-        telefono2,
       },
     });
-    if (!respDB) throw new Error("error");
+
+    const newChequeo = await prisma.tBL_INFORMACIONCHEQUEO.create({
+      data: {
+        estatura,
+        fechaDelChequeo: new Date(fechaDelChequeo),
+        nivelDeGrasa,
+        nivelDeMasa,
+        peso,
+        id_cliente: newClient.id
+      }
+    })
+
+
+    if (!newChequeo) throw new Error("error");
 
     return res.json({
       ok: true,
       message: "Cliente creado",
-      data: respDB,
+      data: {
+        cliente: newClient,
+        chequeo: newChequeo
+      },
     });
   } catch (error) {
     console.log(error);

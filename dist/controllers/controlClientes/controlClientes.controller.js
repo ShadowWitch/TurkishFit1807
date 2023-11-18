@@ -47,15 +47,12 @@ const getOneClientes = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getOneClientes = getOneClientes;
 const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { DNI, correo, direccionDetallada, fechaDeIngreso, fechaNacimiento, id_contrato, id_municipio, otroNombre = "", primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, telefono2, } = req.body;
-        const respDB = yield db_1.prisma.tBL_CLIENTES.create({
+        const { DNI, fechaDeIngreso, fechaNacimiento, id_contrato, id_municipio, otroNombre = "", primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, estatura, fechaDelChequeo, nivelDeGrasa, nivelDeMasa, peso, } = req.body;
+        const newClient = yield db_1.prisma.tBL_CLIENTES.create({
             data: {
                 DNI,
-                correo,
-                direccionDetallada,
-                fechaDeIngreso,
-                fechaNacimiento,
-                id_contrato,
+                fechaDeIngreso: new Date(fechaDeIngreso),
+                fechaNacimiento: new Date(fechaNacimiento),
                 id_municipio,
                 otroNombre,
                 primerApellido,
@@ -63,15 +60,27 @@ const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 segundoApellido,
                 segundoNombre,
                 telefono,
-                telefono2,
             },
         });
-        if (!respDB)
+        const newChequeo = yield db_1.prisma.tBL_INFORMACIONCHEQUEO.create({
+            data: {
+                estatura,
+                fechaDelChequeo: new Date(fechaDelChequeo),
+                nivelDeGrasa,
+                nivelDeMasa,
+                peso,
+                id_cliente: newClient.id
+            }
+        });
+        if (!newChequeo)
             throw new Error("error");
         return res.json({
             ok: true,
             message: "Cliente creado",
-            data: respDB,
+            data: {
+                cliente: newClient,
+                chequeo: newChequeo
+            },
         });
     }
     catch (error) {

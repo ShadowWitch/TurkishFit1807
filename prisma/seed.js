@@ -44,19 +44,20 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const addRolesSeed = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // const listaPermisos = await prisma.tBL_PERMISOS.findMany()
-        const listaRoles = [{
-                nombre: 'ADMINISTRADOR',
-                descripcion: 'Hace de todo'
+        const listaRoles = [
+            {
+                nombre: "ADMINISTRADOR",
+                descripcion: "Hace de todo",
             },
             {
-                nombre: 'NORMAL',
-                descripcion: 'Hace pocas cosas'
-            }
+                nombre: "NORMAL",
+                descripcion: "Hace pocas cosas",
+            },
         ];
         yield db_1.prisma.tBL_ROLES.createMany({
-            data: listaRoles
+            data: listaRoles,
         });
-        console.log('Roles seed!');
+        console.log("Roles seed!");
     }
     catch (error) {
         console.log(error);
@@ -64,21 +65,22 @@ const addRolesSeed = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const addPermisosSeed = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const listaPermisos = [{
-                nombre: 'ADMINISTRADOR',
-                descripcion: 'Hace de todo',
-                acciones: ['1001', '1002', '1003']
+        const listaPermisos = [
+            {
+                nombre: "ADMINISTRADOR",
+                descripcion: "Hace de todo",
+                acciones: ["1001", "1002", "1003"],
             },
             {
-                nombre: 'NORMAL',
-                descripcion: 'Hace pocas cosas',
-                acciones: ['1001']
-            }
+                nombre: "NORMAL",
+                descripcion: "Hace pocas cosas",
+                acciones: ["1001"],
+            },
         ];
         yield db_1.prisma.tBL_PERMISOS.createMany({
-            data: listaPermisos
+            data: listaPermisos,
         });
-        console.log('Permisos seed!');
+        console.log("Permisos seed!");
     }
     catch (error) {
         console.log(error);
@@ -88,17 +90,20 @@ const addRolesPermisosREL = () => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const listaRoles = yield db_1.prisma.tBL_ROLES.findMany();
         const listaPermisos = yield db_1.prisma.tBL_PERMISOS.findMany();
-        const registro = [{
+        const registro = [
+            {
                 id_permiso: listaPermisos[0].id,
-                id_role: listaRoles[0].id
-            }, {
+                id_role: listaRoles[0].id,
+            },
+            {
                 id_permiso: listaPermisos[1].id,
-                id_role: listaRoles[1].id
-            }];
+                id_role: listaRoles[1].id,
+            },
+        ];
         yield db_1.prisma.tBL_REL_PERMISOS_ROLES.createMany({
-            data: registro
+            data: registro,
         });
-        console.log('REL Roles Permisos seed!');
+        console.log("REL Roles Permisos seed!");
     }
     catch (error) {
         console.log(error);
@@ -107,29 +112,50 @@ const addRolesPermisosREL = () => __awaiter(void 0, void 0, void 0, function* ()
 const addUsuariosConRolesPermisos = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const listaRELRoles = yield db_1.prisma.tBL_REL_PERMISOS_ROLES.findMany();
-        const passwordEncripted = yield bcrypt_1.default.hashSync('admin123', 5);
+        const passwordEncripted = yield bcrypt_1.default.hashSync("admin123", 5);
         const listaUsuarios = [
             {
-                nombre: 'admin',
+                nombre: "admin",
                 contrasena: passwordEncripted,
-                correoElectronico: 'rosaledark@gmail.com',
+                correoElectronico: "rosaledark@gmail.com",
                 id_rel_role: listaRELRoles[0].id,
-                estado: 'Activo',
-                imagenPerfil: '',
+                estado: "Activo",
+                imagenPerfil: "",
             },
             {
-                nombre: 'admin2',
+                nombre: "admin2",
                 contrasena: passwordEncripted,
-                correoElectronico: 'alexguaman513@gmail.com',
+                correoElectronico: "alexguaman513@gmail.com",
                 id_rel_role: listaRELRoles[1].id,
-                estado: 'Activo',
-                imagenPerfil: '',
-            }
+                estado: "Activo",
+                imagenPerfil: "",
+            },
         ];
         yield db_1.prisma.tBL_USUARIOS.createMany({
-            data: listaUsuarios
+            data: listaUsuarios,
         });
-        console.log('Usuarios seed!');
+        console.log("Usuarios seed!");
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+const addMunicipios = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const listaMunicipios = [
+            {
+                codigo: "1807",
+                nombre: "Yoro",
+            },
+            {
+                codigo: "1804",
+                nombre: "Olancho",
+            },
+        ];
+        yield db_1.prisma.tBL_MUNICIPIO.createMany({
+            data: listaMunicipios,
+        });
+        console.log("Municipios seed!");
     }
     catch (error) {
         console.log(error);
@@ -142,7 +168,8 @@ const ejcutarSeeders = () => __awaiter(void 0, void 0, void 0, function* () {
         // await addUsuariosSeed()
         yield addRolesPermisosREL();
         yield addUsuariosConRolesPermisos();
-        console.log('Seeders Completado!');
+        yield addMunicipios();
+        console.log("Seeders Completado!");
     }
     catch (error) {
         console.log(error);
