@@ -14,33 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("../src/config/db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-// const addPermisosSeed = async () => {
-//     const ListaPermisos: IPermisos[] = [
-//         {
-//             nombre: 'prueba1',
-//             descripcion: 'prueba desc',
-//             acciones: ['Actualizar', 'Eliminar', 'Consular', 'Insertar']
-//         },
-//         {
-//             nombre: 'prueba2',
-//             descripcion: 'prueba desc',
-//             acciones: ['Actualizar', 'Eliminar', 'Consular', 'Insertar']
-//         },
-//         {
-//             nombre: 'prueba3',
-//             descripcion: 'prueba desc',
-//             acciones: ['Actualizar', 'Eliminar', 'Consular', 'Insertar']
-//         }
-//     ]
-//     try {
-//         const resp = await prisma.tBL_PERMISOS.createMany({
-//             data: ListaPermisos
-//         })
-//         console.log('Permisos seed!');
-//     } catch (error) {
-//         console.log('Permisos >> ', error);
-//     }
-// }
 const addRolesSeed = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // const listaPermisos = await prisma.tBL_PERMISOS.findMany()
@@ -161,6 +134,59 @@ const addMunicipios = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log(error);
     }
 });
+const addTipoEjercicios = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const listaTipoEjercicios = [
+            {
+                nombreTipo: "Cardiovascular",
+                descripcion: "Ejercicios para mejorar la salud cardiovascular.",
+            },
+            {
+                nombreTipo: "Fuerza",
+                descripcion: "Ejercicios para aumentar la fuerza muscular.",
+            },
+            {
+                nombreTipo: "Flexibilidad",
+                descripcion: "Ejercicios para mejorar la flexibilidad y amplitud de movimiento.",
+            },
+            {
+                nombreTipo: "Equilibrio",
+                descripcion: "Ejercicios para mejorar el equilibrio y la coordinación.",
+            },
+            {
+                nombreTipo: "Resistencia",
+                descripcion: "Ejercicios para aumentar la resistencia física.",
+            },
+            {
+                nombreTipo: "Intervalos",
+                descripcion: "Ejercicios que alternan entre períodos de alta intensidad y descanso.",
+            },
+            {
+                nombreTipo: "Funcional",
+                descripcion: "Ejercicios diseñados para mejorar la funcionalidad del cuerpo en actividades diarias.",
+            },
+            {
+                nombreTipo: "Potencia",
+                descripcion: "Ejercicios para desarrollar la potencia y explosividad muscular.",
+            },
+            {
+                nombreTipo: "Agilidad",
+                descripcion: "Ejercicios para mejorar la agilidad y la rapidez de movimiento.",
+            },
+            {
+                nombreTipo: "Core",
+                descripcion: "Ejercicios para fortalecer los músculos del core y la zona abdominal.",
+            },
+        ];
+        yield db_1.prisma.tBL_TIPOSEJERCICIOS.createMany({
+            data: listaTipoEjercicios,
+        });
+        console.log("Tipo ejercicios seed!");
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
 const ejcutarSeeders = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield addPermisosSeed();
@@ -169,6 +195,7 @@ const ejcutarSeeders = () => __awaiter(void 0, void 0, void 0, function* () {
         yield addRolesPermisosREL();
         yield addUsuariosConRolesPermisos();
         yield addMunicipios();
+        yield addTipoEjercicios();
         console.log("Seeders Completado!");
     }
     catch (error) {

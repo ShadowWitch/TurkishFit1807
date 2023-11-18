@@ -46,3 +46,8 @@ export interface IMunicipios {
   nombre: string;
   codigo: string;
 }
+
+export interface ITipoEjercicios {
+  nombreTipo: string;
+  descripcion: string;
+}

@@ -7,10 +7,12 @@ const geografia_router_1 = require("./routerGeografia/geografia.router");
 const contratosPagos_router_1 = require("./routerContratosPagos/contratosPagos.router");
 const auth_router_1 = require("./auth/auth.router");
 const controlUsuarios_router_1 = require("./routerControlUsuarios/controlUsuarios.router");
+const ejercicios_router_1 = require("./routerEjercicios/ejercicios.router");
 exports.routerMain = (0, express_1.Router)();
 exports.routerMain.use("/clientes", controlClientes_router_1.routerControlClientes);
 exports.routerMain.use("/geografia", geografia_router_1.routerGeografia);
 exports.routerMain.use("/contrato-pagos", contratosPagos_router_1.routerContratoPagos);
 exports.routerMain.use("/control-usuarios", controlUsuarios_router_1.routerControlUsuariosRolesYPermisos);
+exports.routerMain.use("/ejercicio", ejercicios_router_1.routerEjercicios);
 // * Signin
 exports.routerMain.use("/auth", auth_router_1.authRouter);
