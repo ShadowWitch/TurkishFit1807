@@ -1,0 +1,239 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TODO ------------------------- CONTROL DE CLIENTE --------------------------------------------------
+
+model TBL_PAIS {
+  id           String             @id @default(uuid())
+  nombre       String
+  codigo       String
+  Departamento TBL_DEPARTAMENTO[]
+}
+
+model TBL_DEPARTAMENTO {
+  id      String @id @default(uuid())
+  nombre  String
+  codigo  String
+  id_pais String
+
+  TBL_PAIS      TBL_PAIS        @relation(fields: [id_pais], references: [id])
+  TBL_MUNICIPIO TBL_MUNICIPIO[]
+}
+
+model TBL_MUNICIPIO {
+  id               String           @id @default(uuid())
+  nombre           String
+  codigo           String
+  id_departamento  String
+  TBL_DEPARTAMENTO TBL_DEPARTAMENTO @relation(fields: [id_departamento], references: [id])
+  TBL_CLIENTES     TBL_CLIENTES[]
+}
+
+model TBL_CONTRATOS {
+  id               String         @id @default(uuid())
+  descripcion      String?
+  fechaDeInicio    DateTime
+  fechaDeFin       DateTime
+  ultimaRenovacion DateTime
+  id_pago          String
+  estado           String //* Vencido o Activo -> Activarselo una vez que el Cliente Pague
+  TBL_PAGOS        TBL_PAGOS      @relation(fields: [id_pago], references: [id])
+  TBL_CLIENTES     TBL_CLIENTES[]
+}
+
+model TBL_PAGOS {
+  id             String          @id @default(uuid())
+  cantidadPagada Int
+  fechaPago      DateTime
+  estadoPago     String //* Pagado o No - Esta se guardar por defecto en pagado una vez se haga el pago y se volvera a poner en NO pagado cuando termine su contrato.
+  id_cliente     String // TODO Se guardara automaticamente...
+  TBL_CLIENTES   TBL_CLIENTES    @relation(fields: [id_cliente], references: [id])
+  TBL_CONTRATOS  TBL_CONTRATOS[]
+}
+
+model TBL_CLIENTES {
+  id                 String   @id @default(uuid())
+  DNI                String
+  primerNombre       String
+  segundoNombre      String
+  primerApellido     String
+  segundoApellido    String?
+  otroNombre         String
+  telefono           String
+  telefono2          String?
+  correo             String?
+  fechaNacimiento    DateTime
+  direccionDetallada String
+  fechaDeIngreso     DateTime //* Se guardara la fecha actual en la que se registro el cliente
+  id_municipio       String
+  id_contrato        String
+
+  Municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id])
+  Contratos TBL_CONTRATOS @relation(fields: [id_contrato], references: [id])
+
+  TBL_PAGOS              TBL_PAGOS[]
+  TBL_RUTINAS            TBL_RUTINAS[]
+  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO[]
+}
+
+model TBL_INFORMACIONCHEQUEO {
+  id              String   @id @default(uuid())
+  peso            Float    @default(0.00)
+  estatura        String
+  nivelDeMasa     String?
+  nivelDeGrasa    String?
+  fechaDelChequeo DateTime
+  id_cliente      String // TODO Se guardara automaticamente al hacer el chequeo...
+
+  TBL_CLIENTES TBL_CLIENTES   @relation(fields: [id_cliente], references: [id])
+  TBL_PROGRESO TBL_PROGRESO[]
+}
+
+model TBL_PROGRESO {
+  id         String @id @default(uuid())
+  peso       Float? @default(0.00)
+  perdida    Float? @default(0.00)
+  id_chequeo String
+
+  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id])
+}
+
+// TODO ------------------------- FIN CONTROL DE CLIENTE --------------------------------------------------
+
+// TODO -------------------------  CONTROL DE EJERCICIOS Y DEMAS --------------------------------------------------
+
+model TBL_OBJETIVOSCATALOGOS {
+  id          String        @id @default(uuid())
+  descripcion String
+  TBL_DIETAS  TBL_DIETAS[]
+  TBL_RUTINAS TBL_RUTINAS[]
+}
+
+model TBL_TIPOSEJERCICIOS {
+  id            String          @id @default(uuid())
+  nombreTipo    String
+  descripcion   String
+  TBL_EJERCICIO TBL_EJERCICIO[]
+}
+
+model TBL_EJERCICIO {
+  id                  String              @id @default(uuid())
+  nombre              String
+  descripcion         String
+  imagen              String?
+  id_tipo             String
+  TBL_TIPOSEJERCICIOS TBL_TIPOSEJERCICIOS @relation(fields: [id_tipo], references: [id])
+  TBL_RUTINAS         TBL_RUTINAS[]
+}
+
+model TBL_DIETAS {
+  id                     String                 @id @default(uuid())
+  descripcion            String
+  id_objetivosCatalogos  String
+  TBL_OBJETIVOSCATALOGOS TBL_OBJETIVOSCATALOGOS @relation(fields: [id_objetivosCatalogos], references: [id])
+}
+
+model TBL_RUTINAS {
+  id                    String @id @default(uuid())
+  nombre                String
+  id_ejercicio          String
+  id_objetivosCatalogos String
+  id_cliente            String
+
+  TBL_EJERCICIO          TBL_EJERCICIO          @relation(fields: [id_ejercicio], references: [id])
+  TBL_OBJETIVOSCATALOGOS TBL_OBJETIVOSCATALOGOS @relation(fields: [id_objetivosCatalogos], references: [id])
+  TBL_CLIENTES           TBL_CLIENTES           @relation(fields: [id_cliente], references: [id])
+}
+
+// TODO ------------------------- FIN CONTROL DE EJERCICIOS Y DEMAS --------------------------------------------------
+
+// TODO ------------------------- MONITOREO DE SERVIDOR --------------------------------------------------
+
+model TBL_NETWORKINGCLIENT {
+  id                 String               @id @default(uuid())
+  ipAddress          String
+  navegador          String
+  ubicacion          String
+  TBL_NETWORKINGLOGS TBL_NETWORKINGLOGS[]
+}
+
+model TBL_NETWORKINGLOGS {
+  id                  String @id @default(uuid())
+  metodo              String //* POST, PUT, GET, DELETE, PATCH
+  consulta            String //* body: {id: 1, name: 'pedrito', pass: 'pedrito123123'}
+  id_networkingClient String
+
+  TBL_NETWORKINGCLIENT TBL_NETWORKINGCLIENT @relation(fields: [id_networkingClient], references: [id])
+}
+
+model TBL_NETWORKINGCORS {
+  id        String   @id @default(uuid())
+  whiteList String[]
+  blackList String[]
+}
+
+// TODO ------------------------- FIN MONITOREO DE SERVIDOR --------------------------------------------------
+
+// TODO -------------------------  CONTROL DE APLICACION ANDROID --------------------------------------------------
+
+model TBL_PARAMETROSCATALOGOS {
+  id                    String  @id @default(uuid())
+  nombreApp             String
+  temaApp               String? //* Posiblemente lo termine quitando este...
+  cantidadIntentos      Int
+  activarNotificaciones Boolean
+  logotipoApp           String? //* Por default si no la envia se le pondra una proporcionada por mi mismo...
+}
+
+// TODO ------------------------- FIN CONTROL DE APLICACION ANDROID  --------------------------------------------------
+
+// TODO -------------------------  CONTROL DE USUARIOS --------------------------------------------------
+
+model TBL_PERMISOS {
+  id                     String                   @id @default(uuid())
+  nombre                 String
+  descripcion            String
+  acciones               String[]
+  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
+}
+
+model TBL_REL_PERMISOS_ROLES {
+  id         String @id @default(uuid())
+  id_role    String
+  id_permiso String
+
+  TBL_ROLES    TBL_ROLES    @relation(fields: [id_role], references: [id])
+  TBL_PERMISOS TBL_PERMISOS @relation(fields: [id_permiso], references: [id])
+}
+
+model TBL_ROLES {
+  id                     String                   @id @default(uuid())
+  nombre                 String
+  descripcion            String
+  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
+  TBL_USUARIOS           TBL_USUARIOS[]
+}
+
+model TBL_USUARIOS {
+  id                String    @id @default(uuid())
+  nombre            String
+  correoElectronico String
+  contrasena        String
+  ultimaConexion    DateTime? @default(now())
+  imagenPerfil      String?
+  estado            String    @default("Activo") // * Bloqueado, Activo, etc...
+  id_role           String
+
+  TBL_ROLES TBL_ROLES @relation(fields: [id_role], references: [id])
+}
+
+// TODO ------------------------- FIN CONTROL DE USUARIOS  --------------------------------------------------
