@@ -1,7 +1,11 @@
 import { Router } from "express";
-import { addTipoEjercicios } from "../../controllers/controlEjercicios/controlEjercicios.controller";
+import {
+  addEjercicio,
+  addTipoEjercicios,
+} from "../../controllers/controlEjercicios/controlEjercicios.controller";
 
 export const routerEjercicios = Router();
 
-routerEjercicios.post("/ejercicios-add", addTipoEjercicios);
+routerEjercicios.post("/tipo-ejercicios-add", addTipoEjercicios);
+routerEjercicios.post("/ejercicios-add", addEjercicio);
 // routerEjercicios.get("/ejercicios-show");

@@ -51,3 +51,10 @@ export interface ITipoEjercicios {
   nombreTipo: string;
   descripcion: string;
 }
+
+export interface IEjercicio {
+  nombre: string;
+  descripcion: string;
+  imagen: string;
+  id_tipo: string;
+}
