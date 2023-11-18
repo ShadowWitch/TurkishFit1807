@@ -1,6 +1,6 @@
 
 // * Librerias
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 import morgan, { Morgan } from 'morgan'
 import cors, { CorsOptions } from 'cors'
 import bodyParser, { BodyParser } from 'body-parser'
@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 
 // * Local Imports
 import { routerMain } from './routers/main';
-import { errorManager } from './middlewares/errorManager.middleware';
+import { errorHandler, notFoundHandler, specificErrorHandler } from './middlewares/errorManager.middleware';
 
 const app: Express = express()
 const port: any = process.env.PORT || 3000
@@ -34,17 +34,19 @@ app.get('/', (req, res) => {
 app.use('/', routerMain)
 
 //* Error manager
-// app.use(errorManager)
+app.use(notFoundHandler);
+// app.use(specificErrorHandler);
+// app.use(errorHandler);
 
 //* Config Middleware 404
-app.use((req, res, next) => {
-    res.status(404).json({
-        error: {
-            status: 'Not Found',
-            message: 'Not Found'
-        }
-    })
-})
+// app.use((req, res, next) => {
+//     res.status(404).json({
+//         error: {
+//             status: 'Not Found',
+//             message: 'Not Found'
+//         }
+//     })
+// })
 
 // * Server Listen
 app.listen(port, () => {

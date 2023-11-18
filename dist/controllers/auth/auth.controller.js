@@ -31,7 +31,10 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "Usuario o contraseña no valido",
                 data: null,
             });
+        console.log('REPS >> ', respDB);
+        console.log('COJNTRASE >> ', contrasena);
         const verificarContrasena = yield bcrypt_1.default.compareSync(contrasena, respDB.contrasena);
+        console.log('VERIFI >> ', verificarContrasena);
         if (!verificarContrasena)
             return res.status(401).json({
                 ok: true,
@@ -51,10 +54,6 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.log(error);
-        return res.json({
-            ok: false,
-            msg: "error",
-        });
     }
 });
 exports.authLogin = authLogin;

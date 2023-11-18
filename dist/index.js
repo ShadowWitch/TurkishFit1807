@@ -11,6 +11,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 // * Local Imports
 const main_1 = require("./routers/main");
+const errorManager_middleware_1 = require("./middlewares/errorManager.middleware");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
 // * Configurations
@@ -27,16 +28,18 @@ app.get('/', (req, res) => {
 // * Config Router Principal
 app.use('/', main_1.routerMain);
 //* Error manager
-// app.use(errorManager)
+app.use(errorManager_middleware_1.notFoundHandler);
+// app.use(specificErrorHandler);
+// app.use(errorHandler);
 //* Config Middleware 404
-app.use((req, res, next) => {
-    res.status(404).json({
-        error: {
-            status: 'Not Found',
-            message: 'Not Found'
-        }
-    });
-});
+// app.use((req, res, next) => {
+//     res.status(404).json({
+//         error: {
+//             status: 'Not Found',
+//             message: 'Not Found'
+//         }
+//     })
+// })
 // * Server Listen
 app.listen(port, () => {
     console.log(`Server corriendo en ${port}`);

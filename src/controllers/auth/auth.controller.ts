@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import jwt, { Jwt } from "jsonwebtoken";
@@ -23,10 +23,17 @@ export const authLogin = async (req: Request, res: Response) => {
         data: null,
       });
 
+
+    console.log('REPS >> ', respDB);
+    console.log('COJNTRASE >> ', contrasena);
+
     const verificarContrasena = await bcrypt.compareSync(
       contrasena,
       respDB.contrasena
     );
+
+
+    console.log('VERIFI >> ', verificarContrasena);
 
     if (!verificarContrasena)
       return res.status(401).json({
@@ -53,10 +60,6 @@ export const authLogin = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.log(error);
-    return res.json({
-      ok: false,
-      msg: "error",
-    });
   }
 };
 
