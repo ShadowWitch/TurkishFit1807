@@ -17,3 +17,15 @@ export interface IClientes {
   id_municipio: string;
   id_contrato: string;
 }
+
+export interface IPermisos {
+  nombre: string;
+  descripcion: string
+  acciones: string[]
+}
+
+export interface IRELPermisosRoles {
+  id_role: string;
+  id_permiso: string;
+
+}

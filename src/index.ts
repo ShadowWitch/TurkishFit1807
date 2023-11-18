@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 
 // * Local Imports
 import { routerMain } from './routers/main';
+import { errorManager } from './middlewares/errorManager.middleware';
 
 const app: Express = express()
 const port: any = process.env.PORT || 3000
@@ -31,6 +32,9 @@ app.get('/', (req, res) => {
 
 // * Config Router Principal
 app.use('/', routerMain)
+
+//* Error manager
+// app.use(errorManager)
 
 //* Config Middleware 404
 app.use((req, res, next) => {

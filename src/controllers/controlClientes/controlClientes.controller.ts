@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../config/db";
 import { errorMessage } from "../../helpers/errorMessage.helper";
-import { IClientes } from "../../types/clientes.types";
+import { IClientes } from "../../types/dbInterfaces.types";
 
 export const getAllClientes = async (req: Request, res: Response) => {
   try {

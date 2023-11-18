@@ -26,6 +26,8 @@ app.get('/', (req, res) => {
 });
 // * Config Router Principal
 app.use('/', main_1.routerMain);
+//* Error manager
+// app.use(errorManager)
 //* Config Middleware 404
 app.use((req, res, next) => {
     res.status(404).json({

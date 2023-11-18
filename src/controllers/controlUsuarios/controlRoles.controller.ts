@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../../config/db";
 import { IRoles } from "../../types/roles.types";
 import { errorMessage } from "../../helpers/errorMessage.helper";
+import { TBL_ROLES } from "@prisma/client";
 
 export const getAllRoles = async (req: Request, res: Response) => {
   try {
@@ -26,7 +27,8 @@ export const getOneRoles = (req: Request, res: Response) => {
 };
 
 export const addRoles = async (req: Request, res: Response) => {
-  const { nombre, descripcion, id_permisos }: IRoles = req.body;
+  const { nombre, descripcion }: TBL_ROLES = req.body;
+
 
   try {
     const respDB = await prisma.tBL_ROLES.create({

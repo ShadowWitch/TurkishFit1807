@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:admin123@localhost:5432/TurkishFir1807_DB?schema=public&connection_limit=5"
 }
 
 model TBL_USUARIOS {
@@ -14,10 +14,10 @@ model TBL_USUARIOS {
   contrasena        String
   ultimaConexion    DateTime? @default(now())
   imagenPerfil      String?
-  estado            String    @default("Activo") // * Bloqueado, Activo, etc...
-  id_role           String
+  estado            String?   @default("Activo") // * Bloqueado, Activo, etc...
+  id_rel_role       String
 
-  TBL_ROLES TBL_ROLES @relation(fields: [id_role], references: [id])
+  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES @relation(fields: [id_rel_role], references: [id])
 }
 
 model TBL_ROLES {
@@ -25,7 +25,6 @@ model TBL_ROLES {
   nombre                 String
   descripcion            String
   TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
-  TBL_USUARIOS           TBL_USUARIOS[]
 }
 
 model TBL_PERMISOS {
@@ -41,8 +40,9 @@ model TBL_REL_PERMISOS_ROLES {
   id_role    String
   id_permiso String
 
-  TBL_ROLES    TBL_ROLES    @relation(fields: [id_role], references: [id])
-  TBL_PERMISOS TBL_PERMISOS @relation(fields: [id_permiso], references: [id])
+  TBL_ROLES    TBL_ROLES      @relation(fields: [id_role], references: [id])
+  TBL_PERMISOS TBL_PERMISOS   @relation(fields: [id_permiso], references: [id])
+  TBL_USUARIOS TBL_USUARIOS[]
 }
 
 model TBL_CLIENTES {

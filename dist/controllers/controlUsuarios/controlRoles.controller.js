@@ -35,7 +35,7 @@ const getOneRoles = (req, res) => {
 };
 exports.getOneRoles = getOneRoles;
 const addRoles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre, descripcion, id_permisos } = req.body;
+    const { nombre, descripcion } = req.body;
     try {
         const respDB = yield db_1.prisma.tBL_ROLES.create({
             data: {
