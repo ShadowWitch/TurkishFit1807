@@ -69,11 +69,11 @@ model TBL_CLIENTES {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  Municipio TBL_MUNICIPIO  @relation(fields: [id_municipio], references: [id])
-  Contratos TBL_CONTRATOS? @relation(fields: [id_contrato], references: [id])
+  municipio TBL_MUNICIPIO  @relation(fields: [id_municipio], references: [id], onDelete: NoAction)
+  contratos TBL_CONTRATOS? @relation(fields: [id_contrato], references: [id], onDelete: Cascade)
 
-  TBL_RUTINAS            TBL_RUTINAS[]
-  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO[]
+  rutinas  TBL_RUTINAS[]
+  chequeos TBL_INFORMACIONCHEQUEO[]
 }
 
 model TBL_MUNICIPIO {
@@ -111,7 +111,7 @@ model TBL_INFORMACIONCHEQUEO {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_CLIENTES TBL_CLIENTES   @relation(fields: [id_cliente], references: [id])
+  TBL_CLIENTES TBL_CLIENTES   @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
   TBL_PROGRESO TBL_PROGRESO[]
 }
 
@@ -124,7 +124,7 @@ model TBL_PROGRESO {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id])
+  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id], onDelete: Cascade)
 }
 
 model TBL_RUTINAS {
@@ -142,7 +142,7 @@ model TBL_RUTINAS {
   updatedAt DateTime? @updatedAt
 
   TBL_EJERCICIO TBL_EJERCICIO @relation(fields: [id_ejercicio], references: [id])
-  TBL_CLIENTES  TBL_CLIENTES  @relation(fields: [id_cliente], references: [id])
+  TBL_CLIENTES  TBL_CLIENTES  @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
 }
 
 model TBL_EJERCICIO {

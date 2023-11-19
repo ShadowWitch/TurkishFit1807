@@ -14,11 +14,16 @@ const db_1 = require("../../config/db");
 const errorMessage_helper_1 = require("../../helpers/errorMessage.helper");
 const getAllClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const respDB = yield db_1.prisma.tBL_CLIENTES.findMany({});
+        const dataClientes = yield db_1.prisma.tBL_CLIENTES.findMany({
+            include: {
+                chequeos: true,
+                contratos: true,
+            },
+        });
         return res.json({
             ok: true,
             message: "",
-            data: respDB,
+            data: dataClientes,
         });
     }
     catch (error) {
@@ -29,8 +34,16 @@ const getAllClientes = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllClientes = getAllClientes;
 const getOneClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.body;
-        const respDB = yield db_1.prisma.tBL_CLIENTES.findFirst({ where: { id } });
+        const { id } = req.params;
+        const respDB = yield db_1.prisma.tBL_CLIENTES.findFirst({
+            where: {
+                id,
+            },
+            include: {
+                chequeos: true,
+                contratos: true,
+            },
+        });
         if (!respDB)
             throw new Error("error");
         return res.json({
@@ -41,7 +54,7 @@ const getOneClientes = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     catch (error) {
         console.log(error);
-        return res.json((0, errorMessage_helper_1.errorMessage)());
+        return res.json((0, errorMessage_helper_1.errorMessage)("Error en la consulta o cliente no existente"));
     }
 });
 exports.getOneClientes = getOneClientes;
@@ -96,10 +109,23 @@ const updateClientes = (req, res) => {
     });
 };
 exports.updateClientes = updateClientes;
-const deleteClientes = (req, res) => {
-    return res.json({
-        ok: true,
-        msg: "actualizando cliente",
-    });
-};
+const deleteClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log("qweqweqkwekj qwjekqkjwhehkjqwe");
+        const { id } = req.params;
+        const respDB = yield db_1.prisma.tBL_CLIENTES.delete({ where: { id } });
+        console.log("ACA >> ", respDB);
+        if (!respDB)
+            throw new Error("error");
+        return res.json({
+            ok: true,
+            message: "",
+            data: respDB,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.json((0, errorMessage_helper_1.errorMessage)("Error al eliminar el cliente"));
+    }
+});
 exports.deleteClientes = deleteClientes;

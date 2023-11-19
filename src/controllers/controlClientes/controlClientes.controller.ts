@@ -5,12 +5,17 @@ import { IChequeo, IClientes, IContrato } from "../../types/dbInterfaces.types";
 
 export const getAllClientes = async (req: Request, res: Response) => {
   try {
-    const respDB = await prisma.tBL_CLIENTES.findMany({});
+    const dataClientes = await prisma.tBL_CLIENTES.findMany({
+      include: {
+        chequeos: true,
+        contratos: true,
+      },
+    });
 
     return res.json({
       ok: true,
       message: "",
-      data: respDB,
+      data: dataClientes,
     });
   } catch (error) {
     console.log(error);
@@ -20,9 +25,17 @@ export const getAllClientes = async (req: Request, res: Response) => {
 
 export const getOneClientes = async (req: Request, res: Response) => {
   try {
-    const { id }: { id: string } = req.body;
+    const { id } = req.params;
 
-    const respDB = await prisma.tBL_CLIENTES.findFirst({ where: { id } });
+    const respDB = await prisma.tBL_CLIENTES.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        chequeos: true,
+        contratos: true,
+      },
+    });
 
     if (!respDB) throw new Error("error");
 
@@ -33,7 +46,9 @@ export const getOneClientes = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    return res.json(errorMessage());
+    return res.json(
+      errorMessage("Error en la consulta o cliente no existente")
+    );
   }
 };
 
@@ -107,9 +122,23 @@ export const updateClientes = (req: Request, res: Response) => {
   });
 };
 
-export const deleteClientes = (req: Request, res: Response) => {
-  return res.json({
-    ok: true,
-    msg: "actualizando cliente",
-  });
+export const deleteClientes = async (req: Request, res: Response) => {
+  try {
+    console.log("qweqweqkwekj qwjekqkjwhehkjqwe");
+    const { id } = req.params;
+    const respDB = await prisma.tBL_CLIENTES.delete({ where: { id } });
+
+    console.log("ACA >> ", respDB);
+
+    if (!respDB) throw new Error("error");
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respDB,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage("Error al eliminar el cliente"));
+  }
 };
