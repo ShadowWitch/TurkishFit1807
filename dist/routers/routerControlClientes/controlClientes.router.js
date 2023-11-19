@@ -9,4 +9,4 @@ exports.routerControlClientes.get("/show-all", controlClientes_controller_1.getA
 exports.routerControlClientes.get("/show-one/:id", controlClientes_controller_1.getOneClientes);
 exports.routerControlClientes.post("/add", controlClientes_controller_1.addClientes);
 exports.routerControlClientes.delete("/delete/:id", controlClientes_controller_1.deleteClientes);
-exports.routerControlClientes.put("/update", controlClientes_controller_1.addClientes);
+exports.routerControlClientes.put("/update", controlClientes_controller_1.updateClientes);

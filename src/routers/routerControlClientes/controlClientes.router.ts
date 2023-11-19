@@ -4,6 +4,7 @@ import {
   deleteClientes,
   getAllClientes,
   getOneClientes,
+  updateClientes,
 } from "../../controllers/controlClientes/controlClientes.controller";
 
 export const routerControlClientes = Router();
@@ -13,5 +14,4 @@ routerControlClientes.get("/show-all", getAllClientes);
 routerControlClientes.get("/show-one/:id", getOneClientes);
 routerControlClientes.post("/add", addClientes);
 routerControlClientes.delete("/delete/:id", deleteClientes);
-
-routerControlClientes.put("/update", addClientes);
+routerControlClientes.put("/update", updateClientes);

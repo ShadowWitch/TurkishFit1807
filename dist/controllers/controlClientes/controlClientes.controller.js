@@ -104,20 +104,47 @@ const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.addClientes = addClientes;
 const updateClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const ro = req.body;
+        const { DNI, fechaDeIngreso, fechaNacimiento, id_municipio, otroNombre, primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, id, } = req.body;
+        const findCliente = yield db_1.prisma.tBL_CLIENTES.findFirst({
+            where: {
+                id,
+            },
+        });
+        if (!findCliente)
+            throw new Error("Cliente no existente");
+        const updateCliente = yield db_1.prisma.tBL_CLIENTES.update({
+            where: {
+                id: id,
+            },
+            data: {
+                DNI,
+                fechaDeIngreso: new Date(fechaDeIngreso),
+                fechaNacimiento: new Date(fechaNacimiento),
+                id_municipio,
+                otroNombre,
+                primerApellido,
+                primerNombre,
+                segundoApellido,
+                segundoNombre,
+                telefono,
+            },
+        });
+        return res.json({
+            ok: true,
+            message: "",
+            data: updateCliente,
+        });
     }
     catch (error) {
         console.log(error);
-        return res.json((0, errorMessage_helper_1.errorMessage)("Error al actualizar el cliente"));
+        return res.json((0, errorMessage_helper_1.errorMessage)("Error al actualizar el cliente o cliente no existente"));
     }
 });
 exports.updateClientes = updateClientes;
 const deleteClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("qweqweqkwekj qwjekqkjwhehkjqwe");
         const { id } = req.params;
         const respDB = yield db_1.prisma.tBL_CLIENTES.delete({ where: { id } });
-        console.log("ACA >> ", respDB);
         if (!respDB)
             throw new Error("error");
         return res.json({

@@ -117,23 +117,63 @@ export const addClientes = async (req: Request, res: Response) => {
 
 export const updateClientes = async (req: Request, res: Response) => {
   try {
+    const {
+      DNI,
+      fechaDeIngreso,
+      fechaNacimiento,
+      id_municipio,
+      otroNombre,
+      primerApellido,
+      primerNombre,
+      segundoApellido,
+      segundoNombre,
+      telefono,
+      id,
+    }: IClientes = req.body;
 
-    const ro:  = req.body
+    const findCliente = await prisma.tBL_CLIENTES.findFirst({
+      where: {
+        id,
+      },
+    });
 
+    if (!findCliente) throw new Error("Cliente no existente");
 
+    const updateCliente = await prisma.tBL_CLIENTES.update({
+      where: {
+        id: id,
+      },
+      data: {
+        DNI,
+        fechaDeIngreso: new Date(fechaDeIngreso),
+        fechaNacimiento: new Date(fechaNacimiento),
+        id_municipio,
+        otroNombre,
+        primerApellido,
+        primerNombre,
+        segundoApellido,
+        segundoNombre,
+        telefono,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: updateCliente,
+    });
   } catch (error) {
     console.log(error);
-    return res.json(errorMessage("Error al actualizar el cliente"));
+    return res.json(
+      errorMessage("Error al actualizar el cliente o cliente no existente")
+    );
   }
 };
 
 export const deleteClientes = async (req: Request, res: Response) => {
   try {
-    console.log("qweqweqkwekj qwjekqkjwhehkjqwe");
     const { id } = req.params;
     const respDB = await prisma.tBL_CLIENTES.delete({ where: { id } });
-
-    console.log("ACA >> ", respDB);
 
     if (!respDB) throw new Error("error");
 
