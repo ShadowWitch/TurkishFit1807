@@ -55,6 +55,7 @@ export interface ITipoEjercicios {
 }
 
 export interface IEjercicio {
+  id?: string;
   nombre: string;
   descripcion: string;
   imagen: string;

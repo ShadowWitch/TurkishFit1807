@@ -149,3 +149,105 @@ export const addEjercicio = async (req: Request, res: Response) => {
     return res.json(errorMessage());
   }
 };
+
+export const getAllEjercicios = async (req: Request, res: Response) => {
+  try {
+    const dataEjercicios = await prisma.tBL_EJERCICIO.findMany({
+      include: {
+        rutinas: true,
+        tipoEjercicios: true,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: dataEjercicios,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
+};
+
+export const getOneEjercicios = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const respDB = await prisma.tBL_EJERCICIO.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        rutinas: true,
+        tipoEjercicios: true,
+      },
+    });
+
+    if (!respDB) throw new Error("error");
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respDB,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(
+      errorMessage("Error en la consulta o ejercicio no existente")
+    );
+  }
+};
+
+export const deleteEjercicios = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const respDB = await prisma.tBL_EJERCICIO.delete({ where: { id } });
+
+    if (!respDB) throw new Error("error");
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respDB,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage("Error al eliminar el ejercicio"));
+  }
+};
+
+export const updateEjercicios = async (req: Request, res: Response) => {
+  try {
+    const { id, descripcion, id_tipo, imagen, nombre }: IEjercicio = req.body;
+
+    const findEjercicio = await prisma.tBL_EJERCICIO.findFirst({
+      where: {
+        id,
+      },
+    });
+    if (!findEjercicio) throw new Error("Ejercicio no existente");
+
+    const updateEjercicio = await prisma.tBL_EJERCICIO.update({
+      where: {
+        id,
+      },
+      data: {
+        descripcion,
+        id_tipo,
+        nombre,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: updateEjercicio,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(
+      errorMessage("Error al actualizar ejercicio o no existente")
+    );
+  }
+};

@@ -2,9 +2,13 @@ import { Router } from "express";
 import {
   addEjercicio,
   addTipoEjercicios,
+  deleteEjercicios,
   deleteTipoEjercicios,
+  getAllEjercicios,
   getAllTipoEjercicios,
+  getOneEjercicios,
   getOneTipoEjercicios,
+  updateEjercicios,
   updateTipoEjercicios,
 } from "../../controllers/controlEjercicios/controlEjercicios.controller";
 
@@ -18,8 +22,8 @@ routerEjercicios.put("/tipo-ejercicios-update", updateTipoEjercicios);
 routerEjercicios.delete("/tipo-ejercicios-delete/:id", deleteTipoEjercicios);
 
 // * Ejercicios
-routerEjercicios.get("/ejercicios-add", addEjercicio);
-routerEjercicios.get("/ejercicios-add", addEjercicio);
+routerEjercicios.get("/ejercicios-show-all", getAllEjercicios);
+routerEjercicios.get("/ejercicios-show-one/:id", getOneEjercicios);
 routerEjercicios.post("/ejercicios-add", addEjercicio);
-routerEjercicios.put("/ejercicios-u[date", addEjercicio);
-routerEjercicios.delete("/ejercicios-add", addEjercicio);
+routerEjercicios.put("/ejercicios-update", updateEjercicios);
+routerEjercicios.delete("/ejercicios-delete/:id", deleteEjercicios);
