@@ -1,6 +1,7 @@
 import { prisma } from "../config/db";
 
 export interface IClientes {
+  id?: string;
   DNI: string;
   primerNombre: string;
   segundoNombre: string;

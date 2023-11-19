@@ -115,11 +115,16 @@ export const addClientes = async (req: Request, res: Response) => {
   }
 };
 
-export const updateClientes = (req: Request, res: Response) => {
-  return res.json({
-    ok: true,
-    msg: "actualizando cliente",
-  });
+export const updateClientes = async (req: Request, res: Response) => {
+  try {
+
+    const ro:  = req.body
+
+
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage("Error al actualizar el cliente"));
+  }
 };
 
 export const deleteClientes = async (req: Request, res: Response) => {

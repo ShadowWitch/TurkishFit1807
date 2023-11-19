@@ -102,12 +102,15 @@ const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.addClientes = addClientes;
-const updateClientes = (req, res) => {
-    return res.json({
-        ok: true,
-        msg: "actualizando cliente",
-    });
-};
+const updateClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const ro = req.body;
+    }
+    catch (error) {
+        console.log(error);
+        return res.json((0, errorMessage_helper_1.errorMessage)("Error al actualizar el cliente"));
+    }
+});
 exports.updateClientes = updateClientes;
 const deleteClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
