@@ -4,7 +4,6 @@ import { IEjercicio, ITipoEjercicios } from "../../types/dbInterfaces.types";
 import { errorMessage } from "../../helpers/errorMessage.helper";
 
 //? ejercicio/ejercicios-add
-
 export const addTipoEjercicios = async (req: Request, res: Response) => {
   try {
     const { descripcion, nombreTipo }: ITipoEjercicios = req.body;
@@ -27,6 +26,106 @@ export const addTipoEjercicios = async (req: Request, res: Response) => {
   }
 };
 
+export const getAllTipoEjercicios = async (req: Request, res: Response) => {
+  try {
+    const dataTipoEjercicios = await prisma.tBL_TIPOSEJERCICIOS.findMany({
+      include: {
+        ejercicios: true,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: dataTipoEjercicios,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
+};
+
+export const getOneTipoEjercicios = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const respDB = await prisma.tBL_TIPOSEJERCICIOS.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        ejercicios: true,
+      },
+    });
+
+    if (!respDB) throw new Error("error");
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respDB,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(
+      errorMessage("Error en la consulta o tipo de ejercicio no existente")
+    );
+  }
+};
+
+export const deleteTipoEjercicios = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const respDB = await prisma.tBL_TIPOSEJERCICIOS.delete({ where: { id } });
+
+    if (!respDB) throw new Error("error");
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respDB,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage("Error al eliminar el tipo de ejercicio"));
+  }
+};
+
+export const updateTipoEjercicios = async (req: Request, res: Response) => {
+  try {
+    const { id, descripcion, nombreTipo }: ITipoEjercicios = req.body;
+
+    const findTipoEjercicio = await prisma.tBL_TIPOSEJERCICIOS.findFirst({
+      where: {
+        id,
+      },
+    });
+    if (!findTipoEjercicio) throw new Error("Tipo de ejercicio no existente");
+
+    const updateTipo = await prisma.tBL_TIPOSEJERCICIOS.update({
+      where: {
+        id,
+      },
+      data: {
+        descripcion,
+        nombreTipo,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "Tipo de Ejercicio creado",
+      data: updateTipo,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(
+      errorMessage("Error al actualizar tipo de ejercicio o no existente")
+    );
+  }
+};
+
+// TODO OTRA COSA
 export const addEjercicio = async (req: Request, res: Response) => {
   try {
     const { descripcion, id_tipo, imagen, nombre }: IEjercicio = req.body;

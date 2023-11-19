@@ -49,6 +49,7 @@ export interface IMunicipios {
 }
 
 export interface ITipoEjercicios {
+  id?: string;
   nombreTipo: string;
   descripcion: string;
 }

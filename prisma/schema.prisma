@@ -20,14 +20,14 @@ model TBL_USUARIOS {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES @relation(fields: [id_rel_role], references: [id])
+  relPermisosRoles TBL_REL_PERMISOS_ROLES @relation(fields: [id_rel_role], references: [id])
 }
 
 model TBL_ROLES {
-  id                     String                   @id @default(uuid())
-  nombre                 String
-  descripcion            String
-  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
+  id               String                   @id @default(uuid())
+  nombre           String
+  descripcion      String
+  relPermisosRoles TBL_REL_PERMISOS_ROLES[]
 }
 
 model TBL_PERMISOS {
@@ -39,7 +39,7 @@ model TBL_PERMISOS {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_REL_PERMISOS_ROLES TBL_REL_PERMISOS_ROLES[]
+  relPermisosRoles TBL_REL_PERMISOS_ROLES[]
 }
 
 model TBL_REL_PERMISOS_ROLES {
@@ -81,9 +81,9 @@ model TBL_MUNICIPIO {
   nombre String
   codigo String @unique
 
-  createdAt    DateTime?      @default(now())
-  updatedAt    DateTime?      @updatedAt
-  TBL_CLIENTES TBL_CLIENTES[]
+  createdAt DateTime?      @default(now())
+  updatedAt DateTime?      @updatedAt
+  clientes  TBL_CLIENTES[]
 }
 
 model TBL_CONTRATOS {
@@ -94,9 +94,9 @@ model TBL_CONTRATOS {
   ultimaRenovacion DateTime
   estado           String //* Vencido o Activo -> Activarselo una vez que el Cliente Pague
 
-  createdAt    DateTime?      @default(now())
-  updatedAt    DateTime?      @updatedAt
-  TBL_CLIENTES TBL_CLIENTES[]
+  createdAt DateTime?      @default(now())
+  updatedAt DateTime?      @updatedAt
+  clientes  TBL_CLIENTES[]
 }
 
 model TBL_INFORMACIONCHEQUEO {
@@ -111,8 +111,8 @@ model TBL_INFORMACIONCHEQUEO {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_CLIENTES TBL_CLIENTES   @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
-  TBL_PROGRESO TBL_PROGRESO[]
+  clientes TBL_CLIENTES   @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
+  progreso TBL_PROGRESO[]
 }
 
 model TBL_PROGRESO {
@@ -124,7 +124,7 @@ model TBL_PROGRESO {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_INFORMACIONCHEQUEO TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id], onDelete: Cascade)
+  chequeo TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id], onDelete: Cascade)
 }
 
 model TBL_RUTINAS {
@@ -141,8 +141,8 @@ model TBL_RUTINAS {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_EJERCICIO TBL_EJERCICIO @relation(fields: [id_ejercicio], references: [id])
-  TBL_CLIENTES  TBL_CLIENTES  @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
+  ejercicios TBL_EJERCICIO @relation(fields: [id_ejercicio], references: [id])
+  clientes   TBL_CLIENTES  @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
 }
 
 model TBL_EJERCICIO {
@@ -155,8 +155,8 @@ model TBL_EJERCICIO {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_TIPOSEJERCICIOS TBL_TIPOSEJERCICIOS @relation(fields: [id_tipo], references: [id])
-  TBL_RUTINAS         TBL_RUTINAS[]
+  tipoEjercicios TBL_TIPOSEJERCICIOS @relation(fields: [id_tipo], references: [id])
+  rutinas        TBL_RUTINAS[]
 }
 
 model TBL_TIPOSEJERCICIOS {
@@ -167,7 +167,7 @@ model TBL_TIPOSEJERCICIOS {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  TBL_EJERCICIO TBL_EJERCICIO[]
+  ejercicios TBL_EJERCICIO[]
 }
 
 // qwe
