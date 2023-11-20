@@ -9,12 +9,14 @@ const auth_router_1 = require("./auth/auth.router");
 const controlUsuarios_router_1 = require("./routerControlUsuarios/controlUsuarios.router");
 const ejercicios_router_1 = require("./routerEjercicios/ejercicios.router");
 const controlChequeos_router_1 = require("./routerChequeos/controlChequeos.router");
+const validarJWT_middleware_1 = require("../middlewares/validarJWT.middleware");
 exports.routerMain = (0, express_1.Router)();
+// * Signin
+exports.routerMain.use("/auth", auth_router_1.authRouter);
+exports.routerMain.use(validarJWT_middleware_1.validarJWT);
 exports.routerMain.use("/clientes", controlClientes_router_1.routerControlClientes);
 exports.routerMain.use("/geografia", geografia_router_1.routerGeografia);
 exports.routerMain.use("/contrato", controlContratos_router_1.routerContratoPagos);
 exports.routerMain.use("/control-usuarios", controlUsuarios_router_1.routerControlUsuariosRolesYPermisos);
 exports.routerMain.use("/ejercicio", ejercicios_router_1.routerEjercicios);
 exports.routerMain.use("/chequeo", controlChequeos_router_1.routerChequeos);
-// * Signin
-exports.routerMain.use("/auth", auth_router_1.authRouter);

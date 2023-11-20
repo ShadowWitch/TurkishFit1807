@@ -47,9 +47,9 @@ model TBL_REL_PERMISOS_ROLES {
   id_role    String
   id_permiso String
 
-  TBL_ROLES    TBL_ROLES      @relation(fields: [id_role], references: [id])
-  TBL_PERMISOS TBL_PERMISOS   @relation(fields: [id_permiso], references: [id])
-  TBL_USUARIOS TBL_USUARIOS[]
+  roles    TBL_ROLES      @relation(fields: [id_role], references: [id])
+  permisos TBL_PERMISOS   @relation(fields: [id_permiso], references: [id])
+  usuarios TBL_USUARIOS[]
 }
 
 model TBL_CLIENTES {

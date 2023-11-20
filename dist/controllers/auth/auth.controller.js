@@ -24,6 +24,14 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             where: {
                 nombre,
             },
+            include: {
+                relPermisosRoles: {
+                    include: {
+                        permisos: true,
+                        roles: true,
+                    },
+                },
+            },
         });
         if (!respDB)
             return res.status(401).json({
@@ -31,10 +39,7 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "Usuario o contraseña no valido",
                 data: null,
             });
-        console.log('REPS >> ', respDB);
-        console.log('COJNTRASE >> ', contrasena);
         const verificarContrasena = yield bcrypt_1.default.compareSync(contrasena, respDB.contrasena);
-        console.log('VERIFI >> ', verificarContrasena);
         if (!verificarContrasena)
             return res.status(401).json({
                 ok: true,
@@ -86,7 +91,7 @@ const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 nombre: nombre.toLowerCase(),
                 contrasena: contrasenaEncriptada,
                 correoElectronico: correoElectronico,
-                id_role: id_role,
+                id_rel_role: id_role,
             },
         });
         return res.json({

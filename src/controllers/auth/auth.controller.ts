@@ -14,6 +14,14 @@ export const authLogin = async (req: Request, res: Response) => {
       where: {
         nombre,
       },
+      include: {
+        relPermisosRoles: {
+          include: {
+            permisos: true,
+            roles: true,
+          },
+        },
+      },
     });
 
     if (!respDB)
@@ -23,17 +31,10 @@ export const authLogin = async (req: Request, res: Response) => {
         data: null,
       });
 
-
-    console.log('REPS >> ', respDB);
-    console.log('COJNTRASE >> ', contrasena);
-
     const verificarContrasena = await bcrypt.compareSync(
       contrasena,
       respDB.contrasena
     );
-
-
-    console.log('VERIFI >> ', verificarContrasena);
 
     if (!verificarContrasena)
       return res.status(401).json({
@@ -104,7 +105,7 @@ export const authRegistrar = async (req: Request, res: Response) => {
         nombre: nombre.toLowerCase(),
         contrasena: contrasenaEncriptada,
         correoElectronico: correoElectronico,
-        id_role: id_role,
+        id_rel_role: id_role,
       },
     });
 
