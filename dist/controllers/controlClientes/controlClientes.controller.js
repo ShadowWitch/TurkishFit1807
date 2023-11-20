@@ -104,7 +104,7 @@ const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.addClientes = addClientes;
 const updateClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { DNI, fechaDeIngreso, fechaNacimiento, id_municipio, otroNombre, primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, id, } = req.body;
+        const { DNI, fechaDeIngreso, fechaNacimiento, id_municipio, otroNombre, primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, id_cliente: id, } = req.body;
         const findCliente = yield db_1.prisma.tBL_CLIENTES.findFirst({
             where: {
                 id,

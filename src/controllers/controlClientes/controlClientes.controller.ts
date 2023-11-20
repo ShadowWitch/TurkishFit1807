@@ -128,7 +128,7 @@ export const updateClientes = async (req: Request, res: Response) => {
       segundoApellido,
       segundoNombre,
       telefono,
-      id,
+      id_cliente: id,
     }: IClientes = req.body;
 
     const findCliente = await prisma.tBL_CLIENTES.findFirst({

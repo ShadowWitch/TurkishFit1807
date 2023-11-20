@@ -111,20 +111,7 @@ model TBL_INFORMACIONCHEQUEO {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  clientes TBL_CLIENTES   @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
-  progreso TBL_PROGRESO[]
-}
-
-model TBL_PROGRESO {
-  id         String @id @default(uuid())
-  peso       Float? @default(0.00)
-  perdida    Float? @default(0.00)
-  id_chequeo String
-
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-
-  chequeo TBL_INFORMACIONCHEQUEO @relation(fields: [id_chequeo], references: [id], onDelete: Cascade)
+  clientes TBL_CLIENTES @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
 }
 
 model TBL_RUTINAS {

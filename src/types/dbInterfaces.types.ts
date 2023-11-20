@@ -1,7 +1,7 @@
 import { prisma } from "../config/db";
 
 export interface IClientes {
-  id?: string;
+  id_cliente?: string;
   DNI: string;
   primerNombre: string;
   segundoNombre: string;
@@ -17,6 +17,7 @@ export interface IClientes {
 }
 
 export interface IChequeo extends IClientes {
+  id_chequeo: string;
   peso: string;
   estatura: string;
   nivelDeMasa: string;
