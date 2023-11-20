@@ -137,6 +137,28 @@ export const renovarContrato = async (req: Request, res: Response) => {
   }
 };
 
+export const checkContratos = async (req: Request, res: Response) => {
+  try {
+    const respContratos = await prisma.tBL_CONTRATOS.findMany({
+      where: {
+        estado: "Vencido",
+      },
+      include: {
+        clientes: true,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respContratos,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
+};
+
 export const deleteContrato = (req: Request, res: Response) => {
   return res.json({
     ok: true,

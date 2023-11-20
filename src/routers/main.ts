@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, Router } from "express";
+import { Router } from "express";
 import { routerControlClientes } from "./routerControlClientes/controlClientes.router";
 import { routerGeografia } from "./routerGeografia/geografia.router";
 import { routerContratoPagos } from "./routerContratosPagos/controlContratos.router";

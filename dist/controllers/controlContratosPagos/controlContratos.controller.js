@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteContrato = exports.renovarContrato = exports.updateContrato = exports.addContrato = exports.getOneContrato = exports.getAllContrato = void 0;
+exports.deleteContrato = exports.checkContratos = exports.renovarContrato = exports.updateContrato = exports.addContrato = exports.getOneContrato = exports.getAllContrato = void 0;
 const errorMessage_helper_1 = require("../../helpers/errorMessage.helper");
 const db_1 = require("../../config/db");
 const getAllContrato = (req, res) => {
@@ -122,6 +122,28 @@ const renovarContrato = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.renovarContrato = renovarContrato;
+const checkContratos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const respContratos = yield db_1.prisma.tBL_CONTRATOS.findMany({
+            where: {
+                estado: "Vencido",
+            },
+            include: {
+                clientes: true,
+            },
+        });
+        return res.json({
+            ok: true,
+            message: "",
+            data: respContratos,
+        });
+    }
+    catch (error) {
+        console.log(error);
+        return res.json((0, errorMessage_helper_1.errorMessage)());
+    }
+});
+exports.checkContratos = checkContratos;
 const deleteContrato = (req, res) => {
     return res.json({
         ok: true,
