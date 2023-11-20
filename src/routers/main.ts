@@ -11,7 +11,7 @@ export const routerMain = Router();
 
 routerMain.use("/clientes", routerControlClientes);
 routerMain.use("/geografia", routerGeografia);
-routerMain.use("/contrato-pagos", routerContratoPagos);
+routerMain.use("/contrato", routerContratoPagos);
 routerMain.use("/control-usuarios", routerControlUsuariosRolesYPermisos);
 
 routerMain.use("/ejercicio", routerEjercicios);

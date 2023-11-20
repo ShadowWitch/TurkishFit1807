@@ -12,7 +12,7 @@ const controlChequeos_router_1 = require("./routerChequeos/controlChequeos.route
 exports.routerMain = (0, express_1.Router)();
 exports.routerMain.use("/clientes", controlClientes_router_1.routerControlClientes);
 exports.routerMain.use("/geografia", geografia_router_1.routerGeografia);
-exports.routerMain.use("/contrato-pagos", controlContratos_router_1.routerContratoPagos);
+exports.routerMain.use("/contrato", controlContratos_router_1.routerContratoPagos);
 exports.routerMain.use("/control-usuarios", controlUsuarios_router_1.routerControlUsuariosRolesYPermisos);
 exports.routerMain.use("/ejercicio", ejercicios_router_1.routerEjercicios);
 exports.routerMain.use("/chequeo", controlChequeos_router_1.routerChequeos);

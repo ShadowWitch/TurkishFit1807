@@ -26,11 +26,14 @@ export interface IChequeo extends IClientes {
 }
 
 export interface IContrato {
+  id_contrato?: string;
   descripcion: string | undefined;
   fechaDeInicio: string;
   fechaDeFin: string;
   ultimaRenovacion: string;
   estado: "Activo" | " Vencido";
+
+  id_cliente: string;
 }
 
 export interface IPermisos {

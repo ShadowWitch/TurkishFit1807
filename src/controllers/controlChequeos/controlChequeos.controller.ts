@@ -48,7 +48,6 @@ export const getOneChequeo = async (req: Request, res: Response) => {
       },
       include: {
         clientes: true,
-        progreso: true,
       },
     });
 

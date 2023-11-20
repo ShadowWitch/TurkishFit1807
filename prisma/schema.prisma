@@ -64,16 +64,15 @@ model TBL_CLIENTES {
   fechaNacimiento DateTime
   fechaDeIngreso  DateTime //* Se guardara la fecha actual en la que se registro el cliente
   id_municipio    String
-  id_contrato     String?
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  municipio TBL_MUNICIPIO  @relation(fields: [id_municipio], references: [id], onDelete: NoAction)
-  contratos TBL_CONTRATOS? @relation(fields: [id_contrato], references: [id], onDelete: Cascade)
+  municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id], onDelete: NoAction)
 
-  rutinas  TBL_RUTINAS[]
-  chequeos TBL_INFORMACIONCHEQUEO[]
+  rutinas   TBL_RUTINAS[]
+  chequeos  TBL_INFORMACIONCHEQUEO[]
+  contratos TBL_CONTRATOS[]
 }
 
 model TBL_MUNICIPIO {
@@ -93,10 +92,12 @@ model TBL_CONTRATOS {
   fechaDeFin       DateTime
   ultimaRenovacion DateTime
   estado           String //* Vencido o Activo -> Activarselo una vez que el Cliente Pague
+  id_cliente       String
 
-  createdAt DateTime?      @default(now())
-  updatedAt DateTime?      @updatedAt
-  clientes  TBL_CLIENTES[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  clientes TBL_CLIENTES @relation(fields: [id_cliente], references: [id], onDelete: Cascade)
 }
 
 model TBL_INFORMACIONCHEQUEO {
