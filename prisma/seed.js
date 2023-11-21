@@ -113,27 +113,26 @@ const addUsuariosConRolesPermisos = () => __awaiter(void 0, void 0, void 0, func
         console.log(error);
     }
 });
-const addMunicipios = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const listaMunicipios = [
-            {
-                codigo: "1807",
-                nombre: "Yoro",
-            },
-            {
-                codigo: "1804",
-                nombre: "Olancho",
-            },
-        ];
-        yield db_1.prisma.tBL_MUNICIPIO.createMany({
-            data: listaMunicipios,
-        });
-        console.log("Municipios seed!");
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
+// const addMunicipios = async () => {
+//   try {
+//     const listaMunicipios: IMunicipios[] = [
+//       {
+//         codigo: "1807",
+//         nombre: "Yoro",
+//       },
+//       {
+//         codigo: "1804",
+//         nombre: "Olancho",
+//       },
+//     ];
+//     await prisma.tBL_MUNICIPIO.createMany({
+//       data: listaMunicipios,
+//     });
+//     console.log("Municipios seed!");
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 const addTipoEjercicios = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const listaTipoEjercicios = [
@@ -194,7 +193,7 @@ const ejcutarSeeders = () => __awaiter(void 0, void 0, void 0, function* () {
         // await addUsuariosSeed()
         yield addRolesPermisosREL();
         yield addUsuariosConRolesPermisos();
-        yield addMunicipios();
+        // await addMunicipios();
         yield addTipoEjercicios();
         console.log("Seeders Completado!");
     }

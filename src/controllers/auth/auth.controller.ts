@@ -70,16 +70,17 @@ export const authLogin = async (req: Request, res: Response) => {
 
 export const checkAuth = async (req: Request, res: Response) => {
   try {
-    let token;
+    let token = req.query.token;
 
-    console.log("REQ HEADERS >> ", req.headers.authorization);
+    // console.log("REQ HEADERS >> ", req.headers.authorization);
+    console.log("TOKEEEEEEN >>> ", token);
 
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" ").at(-1); // Guardar el token
-    }
+    // if (
+    //   req.headers.authorization &&
+    //   req.headers.authorization.startsWith("Bearer")
+    // ) {
+    //   token = req.headers.authorization.split(" ").at(-1); // Guardar el token
+    // }
 
     if (!token) {
       return res.status(200).json({

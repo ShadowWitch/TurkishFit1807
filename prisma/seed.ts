@@ -126,28 +126,28 @@ const addUsuariosConRolesPermisos = async () => {
   }
 };
 
-const addMunicipios = async () => {
-  try {
-    const listaMunicipios: IMunicipios[] = [
-      {
-        codigo: "1807",
-        nombre: "Yoro",
-      },
-      {
-        codigo: "1804",
-        nombre: "Olancho",
-      },
-    ];
+// const addMunicipios = async () => {
+//   try {
+//     const listaMunicipios: IMunicipios[] = [
+//       {
+//         codigo: "1807",
+//         nombre: "Yoro",
+//       },
+//       {
+//         codigo: "1804",
+//         nombre: "Olancho",
+//       },
+//     ];
 
-    await prisma.tBL_MUNICIPIO.createMany({
-      data: listaMunicipios,
-    });
+//     await prisma.tBL_MUNICIPIO.createMany({
+//       data: listaMunicipios,
+//     });
 
-    console.log("Municipios seed!");
-  } catch (error) {
-    console.log(error);
-  }
-};
+//     console.log("Municipios seed!");
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 const addTipoEjercicios = async () => {
   try {
@@ -217,7 +217,7 @@ const ejcutarSeeders = async () => {
     // await addUsuariosSeed()
     await addRolesPermisosREL();
     await addUsuariosConRolesPermisos();
-    await addMunicipios();
+    // await addMunicipios();
     await addTipoEjercicios();
 
     console.log("Seeders Completado!");

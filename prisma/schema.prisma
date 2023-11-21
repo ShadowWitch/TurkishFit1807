@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@172.18.0.2:5432/TurkishFir1807_DB?schema=public&connection_limit=5"
+  url      = "postgresql://postgres:postgres@172.18.0.3:5432/TurkishFir1807_DB?schema=public&connection_limit=5"
 }
 
 model TBL_USUARIOS {
@@ -63,27 +63,26 @@ model TBL_CLIENTES {
   telefono        String
   fechaNacimiento DateTime
   fechaDeIngreso  DateTime //* Se guardara la fecha actual en la que se registro el cliente
-  id_municipio    String
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id], onDelete: NoAction)
+  // municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id], onDelete: NoAction)
 
   rutinas   TBL_RUTINAS[]
   chequeos  TBL_INFORMACIONCHEQUEO[]
   contratos TBL_CONTRATOS[]
 }
 
-model TBL_MUNICIPIO {
-  id     String @id @default(uuid())
-  nombre String
-  codigo String @unique
+// model TBL_MUNICIPIO {
+//   id     String @id @default(uuid())
+//   nombre String
+//   codigo String @unique
 
-  createdAt DateTime?      @default(now())
-  updatedAt DateTime?      @updatedAt
-  clientes  TBL_CLIENTES[]
-}
+//   createdAt DateTime?      @default(now())
+//   updatedAt DateTime?      @updatedAt
+//   clientes  TBL_CLIENTES[]
+// }
 
 model TBL_CONTRATOS {
   id               String   @id @default(uuid())

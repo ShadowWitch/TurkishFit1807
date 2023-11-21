@@ -66,12 +66,15 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.authLogin = authLogin;
 const checkAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let token;
-        console.log("REQ HEADERS >> ", req.headers.authorization);
-        if (req.headers.authorization &&
-            req.headers.authorization.startsWith("Bearer")) {
-            token = req.headers.authorization.split(" ").at(-1); // Guardar el token
-        }
+        let token = req.query.token;
+        // console.log("REQ HEADERS >> ", req.headers.authorization);
+        console.log("TOKEEEEEEN >>> ", token);
+        // if (
+        //   req.headers.authorization &&
+        //   req.headers.authorization.startsWith("Bearer")
+        // ) {
+        //   token = req.headers.authorization.split(" ").at(-1); // Guardar el token
+        // }
         if (!token) {
             return res.status(200).json({
                 ok: false,
