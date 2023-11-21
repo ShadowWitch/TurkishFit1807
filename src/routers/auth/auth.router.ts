@@ -1,14 +1,19 @@
-import { Router } from 'express';
-import { authLogin, authRecuperacionPassword, authRegistrar } from '../../controllers/auth/auth.controller';
-import { errorHandler, notFoundHandler, specificErrorHandler } from '../../middlewares/errorManager.middleware';
+import { Router } from "express";
+import {
+  authLogin,
+  authRecuperacionPassword,
+  authRegistrar,
+  checkAuth,
+} from "../../controllers/auth/auth.controller";
 
-export const authRouter = Router()
+export const authRouter = Router();
 
 // * Login
-authRouter.post('/login', authLogin)
+authRouter.post("/login", authLogin);
+authRouter.get("/check", checkAuth);
 
 // * Registrar
-authRouter.post('/register', authRegistrar)
+authRouter.post("/register", authRegistrar);
 
 // * Registrar
-authRouter.post('/recovery-password', authRecuperacionPassword)
+authRouter.post("/recovery-password", authRecuperacionPassword);

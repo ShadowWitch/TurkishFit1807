@@ -5,6 +5,8 @@ import jwt, { Jwt } from "jsonwebtoken";
 import { prisma } from "../../config/db";
 import { ILoginUsuario, IRegistrarUsuario } from "../../types/usuarios.types";
 import { enviromentAuth } from "../../helpers/enviromentAuth.helper";
+import { IPayload } from "../../types/typesPayloadUser.types";
+import { IRequestPayload } from "../../middlewares/validarJWT.middleware";
 
 export const authLogin = async (req: Request, res: Response) => {
   try {
@@ -25,10 +27,11 @@ export const authLogin = async (req: Request, res: Response) => {
     });
 
     if (!respDB)
-      return res.status(401).json({
-        ok: true,
+      return res.status(200).json({
+        ok: false,
         message: "Usuario o contraseña no valido",
         data: null,
+        estado: 401,
       });
 
     const verificarContrasena = await bcrypt.compareSync(
@@ -37,10 +40,11 @@ export const authLogin = async (req: Request, res: Response) => {
     );
 
     if (!verificarContrasena)
-      return res.status(401).json({
-        ok: true,
+      return res.status(200).json({
+        ok: false,
         message: "Usuario o contraseña no valido",
         data: null,
+        estado: 401,
       });
 
     respDB.contrasena = ":)"; //* Engañar por molestar... Quitar password
@@ -60,6 +64,43 @@ export const authLogin = async (req: Request, res: Response) => {
       token,
     });
   } catch (error: any) {
+    console.log(error);
+  }
+};
+
+export const checkAuth = async (req: Request, res: Response) => {
+  try {
+    let token;
+
+    console.log("REQ HEADERS >> ", req.headers.authorization);
+
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ").at(-1); // Guardar el token
+    }
+
+    if (!token) {
+      return res.status(200).json({
+        ok: false,
+        message: "No autenticado.",
+      });
+    }
+
+    const { respDB } = jwt.verify(
+      token,
+      enviromentAuth.jwtSecretToken
+    ) as IPayload;
+
+    return res.json({
+      ok: true,
+      msg: "Logeando",
+      data: respDB,
+      token,
+    });
+    // req.usuario = { ...respDB };
+  } catch (error) {
     console.log(error);
   }
 };

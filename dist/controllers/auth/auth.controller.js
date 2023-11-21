@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authRecuperacionPassword = exports.authRegistrar = exports.authLogin = void 0;
+exports.authRecuperacionPassword = exports.authRegistrar = exports.checkAuth = exports.authLogin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const db_1 = require("../../config/db");
@@ -34,17 +34,19 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             },
         });
         if (!respDB)
-            return res.status(401).json({
-                ok: true,
+            return res.status(200).json({
+                ok: false,
                 message: "Usuario o contraseña no valido",
                 data: null,
+                estado: 401,
             });
         const verificarContrasena = yield bcrypt_1.default.compareSync(contrasena, respDB.contrasena);
         if (!verificarContrasena)
-            return res.status(401).json({
-                ok: true,
+            return res.status(200).json({
+                ok: false,
                 message: "Usuario o contraseña no valido",
                 data: null,
+                estado: 401,
             });
         respDB.contrasena = ":)"; //* Engañar por molestar... Quitar password
         let token = jsonwebtoken_1.default.sign({
@@ -62,6 +64,34 @@ const authLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.authLogin = authLogin;
+const checkAuth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let token;
+        console.log("REQ HEADERS >> ", req.headers.authorization);
+        if (req.headers.authorization &&
+            req.headers.authorization.startsWith("Bearer")) {
+            token = req.headers.authorization.split(" ").at(-1); // Guardar el token
+        }
+        if (!token) {
+            return res.status(200).json({
+                ok: false,
+                message: "No autenticado.",
+            });
+        }
+        const { respDB } = jsonwebtoken_1.default.verify(token, enviromentAuth_helper_1.enviromentAuth.jwtSecretToken);
+        return res.json({
+            ok: true,
+            msg: "Logeando",
+            data: respDB,
+            token,
+        });
+        // req.usuario = { ...respDB };
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.checkAuth = checkAuth;
 const authRegistrar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { nombre, contrasena, correoElectronico, id_role, imagenPerfil = "", } = req.body;

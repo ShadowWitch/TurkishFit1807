@@ -4,7 +4,7 @@ import jwt, { Jwt, JwtPayload } from "jsonwebtoken";
 import { enviromentAuth } from "../helpers/enviromentAuth.helper";
 import { IPayload, RespDB } from "../types/typesPayloadUser.types";
 
-interface IRequestPayload extends Request {
+export interface IRequestPayload extends Request {
   usuario: RespDB;
 }
 
@@ -24,7 +24,7 @@ export const validarJWT = (
     }
 
     if (!token) {
-      return res.status(401).json({
+      return res.status(200).json({
         ok: false,
         message: "No autenticado.",
       });
@@ -37,7 +37,7 @@ export const validarJWT = (
 
     req.usuario = { ...respDB };
   } catch (error) {
-    return res.status(401).json({
+    return res.status(200).json({
       ok: false,
       msg: "Not valid token.",
     });

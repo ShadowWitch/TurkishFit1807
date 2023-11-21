@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:admin123@localhost:5432/TurkishFir1807_DB?schema=public&connection_limit=5"
+  url      = "postgresql://postgres:postgres@172.18.0.2:5432/TurkishFir1807_DB?schema=public&connection_limit=5"
 }
 
 model TBL_USUARIOS {
