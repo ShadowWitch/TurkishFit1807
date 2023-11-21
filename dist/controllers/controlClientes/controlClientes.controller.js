@@ -61,6 +61,7 @@ exports.getOneClientes = getOneClientes;
 const addClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { DNI, fechaDeIngreso, fechaNacimiento, id_municipio, otroNombre = "", primerApellido, primerNombre, segundoApellido, segundoNombre, telefono, estatura, fechaDelChequeo, nivelDeGrasa, nivelDeMasa, peso, } = req.body;
+        console.log("TOKEN >> ", req.headers.authorization);
         const newClient = yield db_1.prisma.tBL_CLIENTES.create({
             data: {
                 DNI,
