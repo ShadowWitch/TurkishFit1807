@@ -1,37 +1,39 @@
-
 // * Librerias
-import express, { Express, NextFunction, Request, Response } from 'express';
-import morgan, { Morgan } from 'morgan'
-import cors, { CorsOptions } from 'cors'
-import bodyParser, { BodyParser } from 'body-parser'
+import express, { Express, NextFunction, Request, Response } from "express";
+import morgan, { Morgan } from "morgan";
+import cors, { CorsOptions } from "cors";
+// import bodyParser, { BodyParser } from 'body-parser'
 
-
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 // * Local Imports
-import { routerMain } from './routers/main';
-import { errorHandler, notFoundHandler, specificErrorHandler } from './middlewares/errorManager.middleware';
+import { routerMain } from "./routers/main";
+import {
+  errorHandler,
+  notFoundHandler,
+  specificErrorHandler,
+} from "./middlewares/errorManager.middleware";
 
-const app: Express = express()
-const port: any = process.env.PORT || 3000
+const app: Express = express();
+const port: any = process.env.PORT || 3000;
 
 // * Configurations
 dotenv.config();
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 
 // * Configurations Body-Parser
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // * Configurations Cors
-app.use(cors())
+app.use(cors());
 
-app.get('/', (req, res) => {
-    res.end('qweqwe')
-})
+app.get("/", (req, res) => {
+  res.end("qweqwe");
+});
 
 // * Config Router Principal
-app.use('/', routerMain)
+app.use("/", routerMain);
 
 //* Error manager
 app.use(notFoundHandler);
@@ -50,6 +52,5 @@ app.use(notFoundHandler);
 
 // * Server Listen
 app.listen(port, () => {
-    console.log(`Server corriendo en ${port}`)
-})
-
+  console.log(`Server corriendo en ${port}`);
+});

@@ -13,7 +13,7 @@ export const routerMain = Router();
 // * Signin
 routerMain.use("/auth", authRouter);
 
-routerMain.use(validarJWT);
+// routerMain.use(validarJWT as never);
 
 routerMain.use("/clientes", routerControlClientes);
 routerMain.use("/geografia", routerGeografia);

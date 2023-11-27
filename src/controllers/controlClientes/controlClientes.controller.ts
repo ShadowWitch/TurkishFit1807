@@ -73,8 +73,6 @@ export const addClientes = async (req: Request, res: Response) => {
       peso,
     }: IChequeo = req.body;
 
-    console.log("TOKEN >> ", req.headers.authorization);
-
     const newClient = await prisma.tBL_CLIENTES.create({
       data: {
         DNI,
