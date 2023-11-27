@@ -54,7 +54,7 @@ export const authLogin = async (req: Request, res: Response) => {
         respDB,
       },
       enviromentAuth.jwtSecretToken,
-      { expiresIn: "2h" }
+      { expiresIn: "10h" }
     );
 
     return res.json({
@@ -70,7 +70,7 @@ export const authLogin = async (req: Request, res: Response) => {
 
 export const checkAuth = async (req: Request, res: Response) => {
   try {
-    let token = req.query.token;
+    let token = req.query.token as never;
 
     // console.log("REQ HEADERS >> ", req.headers.authorization);
     console.log("TOKEEEEEEN >>> ", token);
@@ -92,7 +92,7 @@ export const checkAuth = async (req: Request, res: Response) => {
     const { respDB } = jwt.verify(
       token,
       enviromentAuth.jwtSecretToken
-    ) as IPayload;
+    ) as never;
 
     return res.json({
       ok: true,
