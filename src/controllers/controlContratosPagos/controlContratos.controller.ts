@@ -20,13 +20,27 @@ export const getOneContrato = (req: Request, res: Response) => {
 export const addContrato = async (req: Request, res: Response) => {
   try {
     const {
-      descripcion,
+      descripcion = "N/A",
       estado,
       fechaDeFin,
       fechaDeInicio,
       ultimaRenovacion,
       id_cliente,
     }: IContrato = req.body;
+
+    const findCliente = await prisma.tBL_CLIENTES.findFirst({
+      where: {
+        id: id_cliente,
+      },
+      include: {
+        contratos: true,
+      },
+    });
+
+    if (!findCliente) return res.json(errorMessage("Cliente no existente"));
+
+    if (findCliente.contratos.length > 0)
+      return res.json(errorMessage("Cliente ya tiene contrato"));
 
     const newContrato = await prisma.tBL_CONTRATOS.create({
       data: {
