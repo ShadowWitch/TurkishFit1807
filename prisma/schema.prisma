@@ -70,10 +70,10 @@ model TBL_CLIENTES {
 
   // municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id], onDelete: NoAction)
 
-  rutinas                TBL_RUTINAS[]
-  chequeos               TBL_INFORMACIONCHEQUEO[]
-  contratos              TBL_CONTRATOS[]
-  TBL_REL_CLIENTE_RUTINA TBL_REL_CLIENTE_RUTINA[]
+  rutinas          TBL_RUTINAS[]
+  chequeos         TBL_INFORMACIONCHEQUEO[]
+  contratos        TBL_CONTRATOS[]
+  relClienteRutina TBL_REL_CLIENTE_RUTINA[]
 }
 
 // model TBL_MUNICIPIO {
