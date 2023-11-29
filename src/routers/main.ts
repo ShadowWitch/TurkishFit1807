@@ -7,6 +7,7 @@ import { routerControlUsuariosRolesYPermisos } from "./routerControlUsuarios/con
 import { routerEjercicios } from "./routerEjercicios/ejercicios.router";
 import { routerChequeos } from "./routerChequeos/controlChequeos.router";
 import { validarJWT } from "../middlewares/validarJWT.middleware";
+import { routerRutinas } from "./routerRutinas/controlRutinas.router";
 
 export const routerMain = Router();
 
@@ -19,6 +20,8 @@ routerMain.use("/clientes", routerControlClientes);
 routerMain.use("/geografia", routerGeografia);
 routerMain.use("/contrato", routerContratoPagos);
 routerMain.use("/control-usuarios", routerControlUsuariosRolesYPermisos);
+
+routerMain.use("/rutina", routerRutinas);
 
 routerMain.use("/ejercicio", routerEjercicios);
 routerMain.use("/chequeo", routerChequeos);

@@ -70,9 +70,10 @@ model TBL_CLIENTES {
 
   // municipio TBL_MUNICIPIO @relation(fields: [id_municipio], references: [id], onDelete: NoAction)
 
-  rutinas   TBL_RUTINAS[]
-  chequeos  TBL_INFORMACIONCHEQUEO[]
-  contratos TBL_CONTRATOS[]
+  rutinas          TBL_RUTINAS[]
+  chequeos         TBL_INFORMACIONCHEQUEO[]
+  contratos        TBL_CONTRATOS[]
+  relClienteRutina TBL_REL_CLIENTE_RUTINA[]
 }
 
 // model TBL_MUNICIPIO {
@@ -145,6 +146,43 @@ model TBL_EJERCICIO {
 
   tipoEjercicios TBL_TIPOSEJERCICIOS @relation(fields: [id_tipo], references: [id])
   rutinas        TBL_RUTINAS[]
+}
+
+model TBL_EJERCICIO_RUTINA {
+  id                       String                     @id @default(uuid())
+  nombre                   String
+  createdAt                DateTime?                  @default(now())
+  updatedAt                DateTime?                  @updatedAt
+  TBL_REL_RUTINA_EJERCICIO TBL_REL_RUTINA_EJERCICIO[]
+}
+
+model TBL_RUTINA_ENTRENAMIENTO {
+  id                       String                     @id @default(uuid())
+  nombre                   String
+  createdAt                DateTime?                  @default(now())
+  updatedAt                DateTime?                  @updatedAt
+  TBL_REL_RUTINA_EJERCICIO TBL_REL_RUTINA_EJERCICIO[]
+  TBL_REL_CLIENTE_RUTINA   TBL_REL_CLIENTE_RUTINA[]
+}
+
+model TBL_REL_RUTINA_EJERCICIO {
+  id                      String @id @default(uuid())
+  id_rutina_entrenamiento String
+  id_ejercicio_rutina     String
+  series                  String
+  repeticiones            String
+
+  ejercicioRutina     TBL_EJERCICIO_RUTINA     @relation(fields: [id_ejercicio_rutina], references: [id])
+  rutinaEntrenamiento TBL_RUTINA_ENTRENAMIENTO @relation(fields: [id_rutina_entrenamiento], references: [id])
+}
+
+model TBL_REL_CLIENTE_RUTINA {
+  id         String @id @default(uuid())
+  id_cliente String
+  id_rutina  String
+
+  cliente             TBL_CLIENTES             @relation(fields: [id_cliente], references: [id])
+  rutinaEntrenamiento TBL_RUTINA_ENTRENAMIENTO @relation(fields: [id_rutina], references: [id])
 }
 
 model TBL_TIPOSEJERCICIOS {

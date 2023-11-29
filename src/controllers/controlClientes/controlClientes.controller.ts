@@ -9,6 +9,24 @@ export const getAllClientes = async (req: Request, res: Response) => {
       include: {
         chequeos: true,
         contratos: true,
+        rutinas: true,
+        relClienteRutina: {
+          include: {
+            rutinaEntrenamiento: {
+              include: {
+                TBL_REL_RUTINA_EJERCICIO: {
+                  include: {
+                    ejercicioRutina: {
+                      select: {
+                        nombre: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
 
