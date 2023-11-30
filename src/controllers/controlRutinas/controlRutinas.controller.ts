@@ -143,7 +143,12 @@ export const getAllRutinas = async (req: Request, res: Response) => {
     const dataRutinas = await prisma.tBL_RUTINA_ENTRENAMIENTO.findMany({
       include: {
         TBL_REL_CLIENTE_RUTINA: true,
-        TBL_REL_RUTINA_EJERCICIO: true,
+        TBL_REL_RUTINA_EJERCICIO: {
+          include: {
+            ejercicioRutina: true,
+            rutinaEntrenamiento: true,
+          },
+        },
       },
     });
 
