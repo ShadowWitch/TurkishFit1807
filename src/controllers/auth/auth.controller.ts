@@ -112,7 +112,7 @@ export const authRegistrar = async (req: Request, res: Response) => {
       nombre,
       contrasena,
       correoElectronico,
-      id_role,
+      id_rel_role,
       imagenPerfil = "",
     }: IRegistrarUsuario = req.body;
 
@@ -147,7 +147,7 @@ export const authRegistrar = async (req: Request, res: Response) => {
         nombre: nombre.toLowerCase(),
         contrasena: contrasenaEncriptada,
         correoElectronico: correoElectronico,
-        id_rel_role: id_role,
+        id_rel_role: id_rel_role,
       },
     });
 
