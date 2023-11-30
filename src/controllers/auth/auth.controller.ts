@@ -14,7 +14,7 @@ export const authLogin = async (req: Request, res: Response) => {
 
     const respDB = await prisma.tBL_USUARIOS.findFirst({
       where: {
-        nombre,
+        nombre: nombre.toLowerCase(),
       },
       include: {
         relPermisosRoles: {
@@ -35,7 +35,7 @@ export const authLogin = async (req: Request, res: Response) => {
       });
 
     const verificarContrasena = await bcrypt.compareSync(
-      contrasena,
+      contrasena.toLowerCase(),
       respDB.contrasena
     );
 
@@ -116,6 +116,9 @@ export const authRegistrar = async (req: Request, res: Response) => {
       imagenPerfil = "",
     }: IRegistrarUsuario = req.body;
 
+    const relRoles = await prisma.tBL_REL_PERMISOS_ROLES.findFirst();
+    if (!relRoles) throw new Error("Rel Roles no tiene registros");
+
     // * Verificar Usuario
     const verificacionUsuario = await prisma.tBL_USUARIOS.findFirst({
       where: {
@@ -123,9 +126,9 @@ export const authRegistrar = async (req: Request, res: Response) => {
           {
             nombre: nombre.toLowerCase(),
           },
-          {
-            correoElectronico: correoElectronico.toLowerCase(),
-          },
+          // {
+          //   correoElectronico: correoElectronico.toLowerCase(),
+          // },
         ],
       },
     });
@@ -142,12 +145,13 @@ export const authRegistrar = async (req: Request, res: Response) => {
       contrasena.toLowerCase(),
       10
     );
+
     const respDB = await prisma.tBL_USUARIOS.create({
       data: {
         nombre: nombre.toLowerCase(),
         contrasena: contrasenaEncriptada,
-        correoElectronico: correoElectronico,
-        id_rel_role: id_rel_role,
+        correoElectronico: correoElectronico || "rosalesdark@gmail.com",
+        id_rel_role: relRoles.id,
       },
     });
 
