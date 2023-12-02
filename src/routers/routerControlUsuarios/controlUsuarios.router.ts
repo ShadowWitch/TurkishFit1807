@@ -3,6 +3,7 @@ import {
   addUsuarios,
   deleteUsuarios,
   getAllUsuarios,
+  inactiveUsuario,
   updateUsuarios,
 } from "../../controllers/controlUsuarios/controlUsuarios.controller";
 import {
@@ -23,6 +24,12 @@ export const routerControlUsuariosRolesYPermisos = Router();
 // * Usuarios
 routerControlUsuariosRolesYPermisos.get("/users/show-all", getAllUsuarios);
 routerControlUsuariosRolesYPermisos.post("/users/add-one", addUsuarios);
+
+routerControlUsuariosRolesYPermisos.post(
+  "/users/active-inactive",
+  inactiveUsuario
+);
+
 routerControlUsuariosRolesYPermisos.put("/users/update-one", updateUsuarios);
 routerControlUsuariosRolesYPermisos.delete("/users/delete-one", deleteUsuarios);
 
