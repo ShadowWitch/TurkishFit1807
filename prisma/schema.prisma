@@ -16,12 +16,12 @@ model TBL_USUARIOS {
   ultimaConexion    DateTime? @default(now())
   imagenPerfil      String?
   estado            String?   @default("Activo") // * Bloqueado, Activo, etc...
-  id_rel_role       String
+  id_role           String?
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  relPermisosRoles TBL_REL_PERMISOS_ROLES @relation(fields: [id_rel_role], references: [id])
+  roles TBL_ROLES? @relation(fields: [id_role], references: [id])
 }
 
 model TBL_ROLES {
@@ -29,13 +29,14 @@ model TBL_ROLES {
   nombre           String
   descripcion      String
   relPermisosRoles TBL_REL_PERMISOS_ROLES[]
+  TBL_USUARIOS     TBL_USUARIOS[]
 }
 
 model TBL_PERMISOS {
-  id          String   @id @default(uuid())
+  id          String @id @default(uuid())
   nombre      String
   descripcion String
-  acciones    String[]
+  acciones    String
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
@@ -48,9 +49,8 @@ model TBL_REL_PERMISOS_ROLES {
   id_role    String
   id_permiso String
 
-  roles    TBL_ROLES      @relation(fields: [id_role], references: [id])
-  permisos TBL_PERMISOS   @relation(fields: [id_permiso], references: [id])
-  usuarios TBL_USUARIOS[]
+  roles    TBL_ROLES    @relation(fields: [id_role], references: [id])
+  permisos TBL_PERMISOS @relation(fields: [id_permiso], references: [id])
 }
 
 model TBL_CLIENTES {
