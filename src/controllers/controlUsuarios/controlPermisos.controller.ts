@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { IPermisos } from "../../types/permisos.types";
 import { prisma } from "../../config/db";
+import { IPermisos } from "../../types/dbInterfaces.types";
 
 export const getAllPermisos = async (req: Request, res: Response) => {
   try {

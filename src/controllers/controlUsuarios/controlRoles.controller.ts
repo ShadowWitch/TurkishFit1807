@@ -6,7 +6,12 @@ import { TBL_ROLES } from "@prisma/client";
 
 export const getAllRoles = async (req: Request, res: Response) => {
   try {
-    const respDB = await prisma.tBL_ROLES.findMany({});
+    const respDB = await prisma.tBL_REL_PERMISOS_ROLES.findMany({
+      include: {
+        permisos: true,
+        roles: true,
+      },
+    });
 
     return res.json({
       ok: true,
@@ -28,7 +33,6 @@ export const getOneRoles = (req: Request, res: Response) => {
 
 export const addRoles = async (req: Request, res: Response) => {
   const { nombre, descripcion }: TBL_ROLES = req.body;
-
 
   try {
     const respDB = await prisma.tBL_ROLES.create({

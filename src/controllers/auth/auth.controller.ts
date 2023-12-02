@@ -17,10 +17,13 @@ export const authLogin = async (req: Request, res: Response) => {
         nombre: nombre.toLowerCase(),
       },
       include: {
-        relPermisosRoles: {
+        roles: {
           include: {
-            permisos: true,
-            roles: true,
+            relPermisosRoles: {
+              include: {
+                permisos: true,
+              },
+            },
           },
         },
       },
@@ -116,7 +119,7 @@ export const authRegistrar = async (req: Request, res: Response) => {
       imagenPerfil = "",
     }: IRegistrarUsuario = req.body;
 
-    const relRoles = await prisma.tBL_REL_PERMISOS_ROLES.findFirst();
+    const relRoles = await prisma.tBL_ROLES.findFirst();
     if (!relRoles) throw new Error("Rel Roles no tiene registros");
 
     // * Verificar Usuario
@@ -151,7 +154,7 @@ export const authRegistrar = async (req: Request, res: Response) => {
         nombre: nombre.toLowerCase(),
         contrasena: contrasenaEncriptada,
         correoElectronico: correoElectronico || "rosalesdark@gmail.com",
-        id_rel_role: relRoles.id,
+        id_role: relRoles.id,
       },
     });
 
