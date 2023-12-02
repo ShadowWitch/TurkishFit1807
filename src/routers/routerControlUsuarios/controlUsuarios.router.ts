@@ -29,7 +29,7 @@ routerControlUsuariosRolesYPermisos.delete("/users/delete-one", deleteUsuarios);
 // * Roles
 
 routerControlUsuariosRolesYPermisos.get("/roles/show-all", getAllRoles);
-routerControlUsuariosRolesYPermisos.post("/roles/add-one", addRoles);
+routerControlUsuariosRolesYPermisos.post("/roles/add", addRoles);
 routerControlUsuariosRolesYPermisos.put("/roles/update-one", updateRoles);
 routerControlUsuariosRolesYPermisos.delete("/roles/delete-one", deleteRoles);
 
