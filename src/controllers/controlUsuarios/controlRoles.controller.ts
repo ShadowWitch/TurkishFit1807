@@ -2,8 +2,13 @@ import type { Request, Response } from "express";
 import { prisma } from "../../config/db";
 import { IRoles } from "../../types/roles.types";
 import { errorMessage } from "../../helpers/errorMessage.helper";
-import { TBL_ROLES } from "@prisma/client";
+import { TBL_REL_PERMISOS_ROLES, TBL_ROLES } from "@prisma/client";
 
+interface RequestRolesBody {
+  nombre: string;
+  descripcion: string;
+  permisos: string;
+}
 export const getAllRoles = async (req: Request, res: Response) => {
   try {
     const respDB = await prisma.tBL_REL_PERMISOS_ROLES.findMany({
@@ -32,22 +37,35 @@ export const getOneRoles = (req: Request, res: Response) => {
 };
 
 export const addRoles = async (req: Request, res: Response) => {
-  const { nombre, descripcion }: TBL_ROLES = req.body;
+  const { nombre, descripcion = "N/A", permisos }: RequestRolesBody = req.body;
+  const misPermisos: string[] = JSON.parse(permisos);
 
   try {
-    const respDB = await prisma.tBL_ROLES.create({
+    const newRole = await prisma.tBL_ROLES.create({
       data: {
         nombre,
         descripcion,
       },
     });
 
-    if (!respDB) throw new Error("error");
+    if (!newRole) throw new Error("error");
+
+    const dataNew: Omit<TBL_REL_PERMISOS_ROLES, "id">[] = misPermisos.map(
+      (e, index) => ({
+        id_permiso: e,
+        id_role: newRole.id,
+      })
+    );
+
+    const newRelRolePermisosAll =
+      await prisma.tBL_REL_PERMISOS_ROLES.createMany({
+        data: dataNew,
+      });
 
     return res.json({
       ok: true,
-      message: "Permiso creado",
-      data: respDB,
+      message: "Rol creado",
+      data: newRelRolePermisosAll,
     });
   } catch (error: any) {
     console.log(error.message);
