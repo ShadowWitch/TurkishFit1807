@@ -29,6 +29,21 @@ export const getAllRoles = async (req: Request, res: Response) => {
   }
 };
 
+export const listaRoles = async (req: Request, res: Response) => {
+  try {
+    const respDB = await prisma.tBL_ROLES.findMany();
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: respDB,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
+};
+
 export const getOneRoles = (req: Request, res: Response) => {
   return res.json({
     ok: true,
