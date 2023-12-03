@@ -10,7 +10,7 @@ datasource db {
 
 model TBL_USUARIOS {
   id                String    @id @default(uuid())
-  nombre            String
+  nombre            String    @unique
   correoElectronico String
   contrasena        String
   ultimaConexion    DateTime? @default(now())
