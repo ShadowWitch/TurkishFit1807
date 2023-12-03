@@ -194,6 +194,53 @@ export const updateEmailOrUser = async (req: Request, res: Response) => {
   }
 };
 
+export const updateContrasena = async (req: Request, res: Response) => {
+  try {
+    const { id, contrasena, nuevaContrasena } = req.body;
+
+    const dataUser = await prisma.tBL_USUARIOS.findFirstOrThrow({
+      where: {
+        id,
+      },
+    });
+    const verificarContrasena = await bcrypt.compareSync(
+      contrasena.toLowerCase(),
+      dataUser.contrasena
+    );
+
+    if (!verificarContrasena)
+      return res.status(200).json({
+        ok: false,
+        message: "Contraseña no valida",
+        data: null,
+        estado: 401,
+      });
+
+    const contrasenaEncriptada = await bcrypt.hashSync(
+      nuevaContrasena.toLowerCase(),
+      10
+    );
+
+    const updateUser = await prisma.tBL_USUARIOS.update({
+      where: {
+        id,
+      },
+      data: {
+        contrasena: contrasenaEncriptada,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "Contraseña cambiada con exito",
+      data: updateUser,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
+};
+
 export const addUsuarios = (req: Request, res: Response) => {
   return res.json({
     ok: true,
