@@ -114,8 +114,6 @@ export const updateRol = async (req: Request, res: Response) => {
   try {
     const { id_rol, id_usuario } = req.body;
 
-    console.log("CONOLE BOSY >> ", JSON.stringify(req.body, null, 3));
-
     const user = await prisma.tBL_USUARIOS.findFirst({
       where: {
         id: id_usuario,
@@ -144,11 +142,56 @@ export const updateRol = async (req: Request, res: Response) => {
   }
 };
 
-export const getOneUsuarios = (req: Request, res: Response) => {
-  return res.json({
-    ok: true,
-    msg: "prueba",
-  });
+export const getOneUsuarios = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const dataUser = await prisma.tBL_USUARIOS.findFirstOrThrow({
+      where: {
+        id,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: dataUser,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
+};
+
+export const updateEmailOrUser = async (req: Request, res: Response) => {
+  try {
+    const { id, correoElectronico, nombre } = req.body;
+
+    const dataUser = await prisma.tBL_USUARIOS.findFirstOrThrow({
+      where: {
+        id,
+      },
+    });
+
+    const updateUser = await prisma.tBL_USUARIOS.update({
+      where: {
+        id,
+      },
+      data: {
+        correoElectronico,
+        nombre,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "",
+      data: updateUser,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
 };
 
 export const addUsuarios = (req: Request, res: Response) => {

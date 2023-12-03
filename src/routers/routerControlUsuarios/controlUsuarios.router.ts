@@ -3,8 +3,10 @@ import {
   addUsuarios,
   deleteUsuarios,
   getAllUsuarios,
+  getOneUsuarios,
   inactiveUsuario,
   recuperarContrasena,
+  updateEmailOrUser,
   updateRol,
   updateUsuarios,
 } from "../../controllers/controlUsuarios/controlUsuarios.controller";
@@ -26,6 +28,8 @@ export const routerControlUsuariosRolesYPermisos = Router();
 
 // * Usuarios
 routerControlUsuariosRolesYPermisos.get("/users/show-all", getAllUsuarios);
+routerControlUsuariosRolesYPermisos.get("/users/show-one/:id", getOneUsuarios);
+
 routerControlUsuariosRolesYPermisos.post("/users/add-one", addUsuarios);
 
 routerControlUsuariosRolesYPermisos.post(
@@ -40,7 +44,7 @@ routerControlUsuariosRolesYPermisos.get(
 
 routerControlUsuariosRolesYPermisos.put("/users/update-rol", updateRol);
 
-routerControlUsuariosRolesYPermisos.put("/users/update-one", updateUsuarios);
+routerControlUsuariosRolesYPermisos.put("/users/update", updateEmailOrUser);
 routerControlUsuariosRolesYPermisos.delete("/users/delete-one", deleteUsuarios);
 
 // * Roles
