@@ -6,6 +6,7 @@ import {
   getOneUsuarios,
   inactiveUsuario,
   recuperarContrasena,
+  updateContrasena,
   updateEmailOrUser,
   updateRol,
   updateUsuarios,
@@ -45,6 +46,8 @@ routerControlUsuariosRolesYPermisos.get(
 routerControlUsuariosRolesYPermisos.put("/users/update-rol", updateRol);
 
 routerControlUsuariosRolesYPermisos.put("/users/update", updateEmailOrUser);
+routerControlUsuariosRolesYPermisos.put("/users/contrasena", updateContrasena);
+
 routerControlUsuariosRolesYPermisos.delete("/users/delete-one", deleteUsuarios);
 
 // * Roles
