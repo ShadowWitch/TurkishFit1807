@@ -4,6 +4,7 @@ import {
   deleteUsuarios,
   getAllUsuarios,
   inactiveUsuario,
+  updateRol,
   updateUsuarios,
 } from "../../controllers/controlUsuarios/controlUsuarios.controller";
 import {
@@ -16,6 +17,7 @@ import {
   addRoles,
   deleteRoles,
   getAllRoles,
+  listaRoles,
   updateRoles,
 } from "../../controllers/controlUsuarios/controlRoles.controller";
 
@@ -30,12 +32,17 @@ routerControlUsuariosRolesYPermisos.post(
   inactiveUsuario
 );
 
+routerControlUsuariosRolesYPermisos.put("/users/update-rol", updateRol);
+
 routerControlUsuariosRolesYPermisos.put("/users/update-one", updateUsuarios);
 routerControlUsuariosRolesYPermisos.delete("/users/delete-one", deleteUsuarios);
 
 // * Roles
 
 routerControlUsuariosRolesYPermisos.get("/roles/show-all", getAllRoles);
+
+routerControlUsuariosRolesYPermisos.get("/roles/show-lista", listaRoles);
+
 routerControlUsuariosRolesYPermisos.post("/roles/add", addRoles);
 routerControlUsuariosRolesYPermisos.put("/roles/update-one", updateRoles);
 routerControlUsuariosRolesYPermisos.delete("/roles/delete-one", deleteRoles);

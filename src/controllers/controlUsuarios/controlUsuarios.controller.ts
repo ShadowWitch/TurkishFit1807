@@ -56,6 +56,40 @@ export const inactiveUsuario = async (req: Request, res: Response) => {
   }
 };
 
+export const updateRol = async (req: Request, res: Response) => {
+  try {
+    const { id_rol, id_usuario } = req.body;
+
+    console.log("CONOLE BOSY >> ", JSON.stringify(req.body, null, 3));
+
+    const user = await prisma.tBL_USUARIOS.findFirst({
+      where: {
+        id: id_usuario,
+      },
+    });
+
+    if (!user) throw new Error("Usuario no encontrado");
+
+    const dataUser = await prisma.tBL_USUARIOS.update({
+      where: {
+        id: id_usuario,
+      },
+      data: {
+        id_role: id_rol,
+      },
+    });
+
+    return res.json({
+      ok: true,
+      message: "Usuario actualizado con exito",
+      data: dataUser,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.json(errorMessage(error.message));
+  }
+};
+
 export const getOneUsuarios = (req: Request, res: Response) => {
   return res.json({
     ok: true,
