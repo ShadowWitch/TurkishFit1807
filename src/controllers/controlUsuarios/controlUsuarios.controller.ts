@@ -8,9 +8,9 @@ import { generarContrasena } from "../../helpers/generarContraseña.helper";
 export const getAllUsuarios = async (req: Request, res: Response) => {
   try {
     const dataUser = await prisma.tBL_USUARIOS.findMany({
-      where: {
-        estado: "Activo",
-      },
+      // where: {
+      //   estado: "Activo",
+      // },
       include: {
         roles: true,
       },
@@ -80,7 +80,7 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
 
 export const inactiveUsuario = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body;
+    const { id, estado } = req.body;
 
     const user = await prisma.tBL_USUARIOS.findFirst({
       where: {
@@ -95,13 +95,13 @@ export const inactiveUsuario = async (req: Request, res: Response) => {
         id,
       },
       data: {
-        estado: "Inactivo",
+        estado,
       },
     });
 
     return res.json({
       ok: true,
-      message: "Usuario desactivado con exito",
+      message: "Usuario desactivado o activado con exito",
       data: dataUser,
     });
   } catch (error: any) {
