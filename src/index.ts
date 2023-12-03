@@ -5,6 +5,7 @@ import cors, { CorsOptions } from "cors";
 // import bodyParser, { BodyParser } from 'body-parser'
 
 import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 
 // * Local Imports
 import { routerMain } from "./routers/main";

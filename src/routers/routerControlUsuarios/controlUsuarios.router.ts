@@ -4,6 +4,7 @@ import {
   deleteUsuarios,
   getAllUsuarios,
   inactiveUsuario,
+  recuperarContrasena,
   updateRol,
   updateUsuarios,
 } from "../../controllers/controlUsuarios/controlUsuarios.controller";
@@ -30,6 +31,11 @@ routerControlUsuariosRolesYPermisos.post("/users/add-one", addUsuarios);
 routerControlUsuariosRolesYPermisos.post(
   "/users/active-inactive",
   inactiveUsuario
+);
+
+routerControlUsuariosRolesYPermisos.get(
+  "/users/recuperar/:email",
+  recuperarContrasena
 );
 
 routerControlUsuariosRolesYPermisos.put("/users/update-rol", updateRol);
