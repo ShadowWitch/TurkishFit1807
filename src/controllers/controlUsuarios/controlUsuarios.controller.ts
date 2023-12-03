@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
 import { prisma } from "../../config/db";
 import { errorMessage } from "../../helpers/errorMessage.helper";
+import { enviarMail } from "../../helpers/enviarEmail";
+import bcrypt from "bcrypt";
+import { generarContrasena } from "../../helpers/generarContraseña.helper";
 
 export const getAllUsuarios = async (req: Request, res: Response) => {
   try {
@@ -17,6 +20,57 @@ export const getAllUsuarios = async (req: Request, res: Response) => {
       ok: true,
       message: "",
       data: dataUser,
+    });
+  } catch (error: any) {
+    console.log(error);
+    return res.json(errorMessage());
+  }
+};
+
+export const recuperarContrasena = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.params;
+
+    const respUser = await prisma.tBL_USUARIOS.findFirst({
+      where: {
+        correoElectronico: email,
+      },
+    });
+
+    if (!respUser) {
+      return res.json({
+        ok: true,
+        message: "Correo enviado",
+        data: null,
+      });
+    }
+
+    const newPassword = generarContrasena(10);
+    const contrasenaEncriptada = await bcrypt.hashSync(
+      newPassword.toLowerCase(),
+      10
+    );
+
+    const updatePassword = await prisma.tBL_USUARIOS.update({
+      where: {
+        id: respUser.id,
+      },
+      data: {
+        contrasena: contrasenaEncriptada,
+      },
+    });
+
+    if (!updatePassword) throw new Error("Error al actualizar contrasena");
+
+    const respRecuperar = await enviarMail({
+      email,
+      password: newPassword,
+    });
+
+    return res.json({
+      ok: true,
+      message: "Correo enviado",
+      data: null,
     });
   } catch (error: any) {
     console.log(error);
