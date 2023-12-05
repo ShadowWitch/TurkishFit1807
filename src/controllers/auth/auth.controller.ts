@@ -42,6 +42,7 @@ export const authLogin = async (req: Request, res: Response) => {
       respDB.contrasena
     );
 
+    console.log("VERIFICAR >> ", verificarContrasena);
     if (!verificarContrasena)
       return res.status(200).json({
         ok: false,
@@ -51,6 +52,15 @@ export const authLogin = async (req: Request, res: Response) => {
       });
 
     respDB.contrasena = ":)"; //* Engañar por molestar... Quitar password
+
+    // if (respDB.estado === "Inactivo") {
+    //   return res.status(200).json({
+    //     ok: false,
+    //     message: "Usuario bloqueado contacte con el administrador",
+    //     data: null,
+    //     estado: 401,
+    //   });
+    // }
 
     let token = jwt.sign(
       {
